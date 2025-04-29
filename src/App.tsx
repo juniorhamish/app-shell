@@ -1,7 +1,10 @@
 import './App.css';
 import { useAuth0 } from '@auth0/auth0-react';
-import { useState } from 'react';
+import { lazy, useState } from 'react';
 import logo from './assets/logo.png';
+
+// eslint-disable-next-line import-x/no-unresolved
+const SpiceTracker = lazy(() => import('spiceTracker/SpiceTracker'));
 
 function App() {
   const { isLoading, isAuthenticated, user, logout, loginWithRedirect } =
@@ -20,6 +23,7 @@ function App() {
   }
   return isAuthenticated && user ? (
     <div>
+      <SpiceTracker />
       <img src={logo} alt={'logo'} width={'32px'} height={'32px'} />
       <img src={user.picture} alt={user.name} />
       <h2>{user.name}</h2>
