@@ -16,16 +16,28 @@ function App() {
       <h2>{user.name}</h2>
       <p>{user.email}</p>
       <button
-        onClick={() =>
-          logout({ logoutParams: { returnTo: window.location.origin } })
-        }
+        type="button"
+        onClick={() => {
+          logout({ logoutParams: { returnTo: window.location.origin } }).catch(
+            () => console.log('Error logging out'),
+          );
+          return undefined;
+        }}
       >
         Log Out
       </button>
     </div>
   ) : (
     <div>
-      <button onClick={() => loginWithRedirect()}>Log In</button>
+      <button
+        type="button"
+        onClick={() => {
+          loginWithRedirect().catch(() => console.log('Login failed'));
+          return undefined;
+        }}
+      >
+        Log In
+      </button>
     </div>
   );
 }
