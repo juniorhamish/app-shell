@@ -21,37 +21,41 @@ function App() {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  return isAuthenticated && user ? (
-    <div>
+  return (
+    <>
       <SpiceTracker />
-      <img src={logo} alt={'logo'} width={'32px'} height={'32px'} />
-      <img src={user.picture} alt={user.name} />
-      <h2>{user.name}</h2>
-      <p>{user.email}</p>
-      <button
-        type="button"
-        onClick={() => {
-          logout({ logoutParams: { returnTo: window.location.origin } }).catch(
-            () => setLogoutFailed(true),
-          );
-          return undefined;
-        }}
-      >
-        Log Out
-      </button>
-    </div>
-  ) : (
-    <div>
-      <button
-        type="button"
-        onClick={() => {
-          loginWithRedirect().catch(() => setLoginFailed(true));
-          return undefined;
-        }}
-      >
-        Log In
-      </button>
-    </div>
+      {isAuthenticated && user ? (
+        <div>
+          <img src={logo} alt={'logo'} width={'32px'} height={'32px'} />
+          <img src={user.picture} alt={user.name} />
+          <h2>{user.name}</h2>
+          <p>{user.email}</p>
+          <button
+            type="button"
+            onClick={() => {
+              logout({
+                logoutParams: { returnTo: window.location.origin },
+              }).catch(() => setLogoutFailed(true));
+              return undefined;
+            }}
+          >
+            Log Out
+          </button>
+        </div>
+      ) : (
+        <div>
+          <button
+            type="button"
+            onClick={() => {
+              loginWithRedirect().catch(() => setLoginFailed(true));
+              return undefined;
+            }}
+          >
+            Log In
+          </button>
+        </div>
+      )}
+    </>
   );
 }
 
