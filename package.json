@@ -17,19 +17,26 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.22.0",
+    "@eslint/compat": "^1.2.8",
+    "@eslint/js": "^9.25.1",
+    "@stylistic/eslint-plugin": "^3.1.0",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react-swc": "^3.8.0",
-    "eslint": "^9.22.0",
-    "eslint-plugin-react-dom": "^1.48.5",
+    "eslint": "^9.25.1",
+    "eslint-config-airbnb-extended": "^1.0.9",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-import-resolver-typescript": "^4.3.4",
+    "eslint-plugin-import-x": "^4.11.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-prettier": "^5.2.6",
+    "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
-    "eslint-plugin-react-x": "^1.48.5",
     "globals": "^16.0.0",
-    "prettier": "3.5.3",
-    "typescript": "~5.7.2",
-    "typescript-eslint": "^8.26.1",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.31.1",
     "vite": "^6.3.1"
   }
 }

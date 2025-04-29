@@ -1,11 +1,20 @@
 import './App.css';
-import logo from './assets/logo.png';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useState } from 'react';
+import logo from './assets/logo.png';
 
 function App() {
   const { isLoading, isAuthenticated, user, logout, loginWithRedirect } =
     useAuth0();
+  const [logoutFailed, setLogoutFailed] = useState(false);
+  const [loginFailed, setLoginFailed] = useState(false);
 
+  if (loginFailed) {
+    return <p>Login failed</p>;
+  }
+  if (logoutFailed) {
+    return <p>Logout failed</p>;
+  }
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -19,7 +28,7 @@ function App() {
         type="button"
         onClick={() => {
           logout({ logoutParams: { returnTo: window.location.origin } }).catch(
-            () => console.log('Error logging out'),
+            () => setLogoutFailed(true),
           );
           return undefined;
         }}
@@ -32,7 +41,7 @@ function App() {
       <button
         type="button"
         onClick={() => {
-          loginWithRedirect().catch(() => console.log('Login failed'));
+          loginWithRedirect().catch(() => setLoginFailed(true));
           return undefined;
         }}
       >
