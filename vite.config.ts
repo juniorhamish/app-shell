@@ -12,7 +12,7 @@ export default defineConfig({
         spiceTracker:
           'https://spice-tracker.dajohnston.co.uk/assets/remoteEntry.js',
       },
-      shared: ['react', 'react-dom'],
+      shared: ['react', 'react-dom', '@auth0/auth0-react'],
     }),
   ],
   build: {
