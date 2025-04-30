@@ -15,10 +15,4 @@ export default defineConfig({
       shared: ['react', 'react-dom', '@auth0/auth0-react'],
     }),
   ],
-  build: {
-    modulePreload: false,
-    target: 'esnext',
-    minify: false,
-    cssCodeSplit: false,
-  },
 });
