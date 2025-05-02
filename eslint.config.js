@@ -4,6 +4,8 @@ import { includeIgnoreFile } from '@eslint/compat';
 import { configs, plugins } from 'eslint-config-airbnb-extended';
 import { rules as prettierConfigRules } from 'eslint-config-prettier';
 import prettierPlugin from 'eslint-plugin-prettier';
+import vitest from '@vitest/eslint-plugin';
+import pluginJest from 'eslint-plugin-jest';
 
 export const projectRoot = path.resolve('.');
 export const gitignorePath = path.resolve(projectRoot, '.gitignore');
@@ -18,6 +20,11 @@ const jsConfig = [
   plugins.stylistic,
   // Import X Plugin
   plugins.importX,
+  {
+    rules: {
+      'import-x/no-unresolved': [2, { ignore: '.(png|webp|jpg|$' }],
+    },
+  },
   // Airbnb Base Recommended Config
   ...configs.base.recommended,
 ];
@@ -65,6 +72,20 @@ const prettierConfig = [
   },
 ];
 
+const vitestConfig = [
+  {
+    files: ['**/*.test.*', './vitest-setup.ts'],
+    plugins: {
+      vitest,
+      jest: pluginJest,
+    },
+    rules: {
+      ...vitest.configs.recommended.rules,
+      'import-x/no-extraneous-dependencies': [2, { devDependencies: true }],
+    },
+  },
+];
+
 export default [
   // Ignore .gitignore files/folder in eslint
   includeIgnoreFile(gitignorePath),
@@ -76,4 +97,5 @@ export default [
   ...typescriptConfig,
   // Prettier Config
   ...prettierConfig,
+  ...vitestConfig,
 ];
