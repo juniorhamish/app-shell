@@ -17,5 +17,14 @@ describe('App', () => {
         within(screen.getByRole('banner')).getByRole('heading'),
       ).toHaveTextContent('DAJohnston');
     });
+    it('should have a Sign in button when the user is not currently logged in', () => {
+      render(<App />);
+
+      expect(
+        within(screen.getByRole('banner')).getByRole('button', {
+          name: 'Sign in',
+        }),
+      ).toBeVisible();
+    });
   });
 });
