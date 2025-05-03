@@ -67,5 +67,14 @@ describe('App', () => {
 
       expect(loginWithRedirect).toHaveBeenCalled();
     });
+    it('should show a spinner while the authentication status is loading', () => {
+      vi.mocked(useAuth0).mockReturnValueOnce({
+        isLoading: true,
+      } as Auth0ContextInterface);
+
+      render(<App />);
+
+      expect(screen.getByRole('progressbar')).toBeVisible();
+    });
   });
 });

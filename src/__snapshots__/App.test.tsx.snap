@@ -3,6 +3,33 @@
 exports[`App > header bar > should have a logo 1`] = `
 <div>
   <div
+    aria-hidden="true"
+    class="MuiBackdrop-root css-1rxxzfv-MuiBackdrop-root"
+    style="opacity: 0; visibility: hidden;"
+  >
+    <span
+      aria-label="User authentication loading."
+      class="MuiCircularProgress-root MuiCircularProgress-indeterminate MuiCircularProgress-colorInherit css-gxw4l9-MuiCircularProgress-root"
+      role="progressbar"
+      style="width: 40px; height: 40px;"
+    >
+      <svg
+        class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+        viewBox="22 22 44 44"
+      >
+        <circle
+          class="MuiCircularProgress-circle MuiCircularProgress-circleIndeterminate css-19t5dcl-MuiCircularProgress-circle"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="20.2"
+          stroke-width="3.6"
+        />
+      </svg>
+    </span>
+  </div>
+  <div
+    aria-busy="true"
     class="MuiContainer-root MuiContainer-maxWidthLg MuiContainer-disableGutters css-ho17r4-MuiContainer-root"
   >
     <header
