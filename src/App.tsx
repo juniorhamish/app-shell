@@ -6,9 +6,11 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
+import { useAuth0 } from '@auth0/auth0-react';
 import logo from './assets/logo-round.png';
 
 function App() {
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
   return (
     <Container maxWidth="lg" disableGutters>
       <AppBar position="static">
@@ -25,7 +27,9 @@ function App() {
           >
             DAJohnston
           </Typography>
-          <Button>Sign in</Button>
+          {!isAuthenticated && (
+            <Button onClick={() => loginWithRedirect()}>Sign in</Button>
+          )}
         </Toolbar>
       </AppBar>
       <Box component="main" />

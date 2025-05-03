@@ -34,5 +34,8 @@ export default defineConfig({
       junit: './reports/junit-report.xml',
     },
     logHeapUsage: true,
+    clearMocks: true,
+    restoreMocks: true,
+    mockReset: true,
   },
 });
