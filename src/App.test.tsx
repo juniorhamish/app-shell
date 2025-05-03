@@ -76,5 +76,19 @@ describe('App', () => {
 
       expect(screen.getByRole('progressbar')).toBeVisible();
     });
+    it('should show the user avatar when the user is logged in', () => {
+      vi.mocked(useAuth0).mockReturnValueOnce({
+        isAuthenticated: true,
+        user: { picture: 'https://me.com/avatar' },
+      } as Auth0ContextInterface);
+
+      render(<App />);
+
+      expect(
+        within(screen.getByRole('banner')).getByRole('img', {
+          name: 'User avatar',
+        }),
+      ).toHaveAttribute('src', 'https://me.com/avatar');
+    });
   });
 });

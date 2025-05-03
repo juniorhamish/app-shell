@@ -1,5 +1,6 @@
 import {
   AppBar,
+  Avatar,
   Backdrop,
   Box,
   Button,
@@ -12,7 +13,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import logo from './assets/logo-round.png';
 
 function App() {
-  const { isAuthenticated, loginWithRedirect, isLoading } = useAuth0();
+  const { isAuthenticated, loginWithRedirect, isLoading, user } = useAuth0();
   return (
     <>
       <Backdrop
@@ -40,7 +41,9 @@ function App() {
             >
               DAJohnston
             </Typography>
-            {!isAuthenticated && (
+            {isAuthenticated ? (
+              <Avatar alt="User avatar" src={user?.picture} />
+            ) : (
               <Button onClick={() => loginWithRedirect()}>Sign in</Button>
             )}
           </Toolbar>
