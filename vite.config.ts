@@ -25,13 +25,14 @@ export default defineConfig({
     setupFiles: ['./vitest-setup.ts'],
     coverage: {
       provider: 'v8',
-      reporter: ['json', 'html', 'lcov'],
+      reporter: ['json', 'html', 'lcov', 'text'],
       include: ['src/**/*.@(js|jsx|mjs|ts|tsx)'],
-      exclude: [],
+      exclude: ['src/main.tsx', 'src/vite-env.d.ts', 'src/remotes.d.ts'],
     },
     reporters: ['default', 'junit'],
     outputFile: {
       junit: './reports/junit-report.xml',
     },
+    logHeapUsage: true,
   },
 });
