@@ -17,7 +17,7 @@ function App() {
             sx={{ maxWidth: 60, verticalAlign: 'middle' }}
             component="img"
             src={logo}
-            alt="Logo for DAJohnston"
+            alt=""
           />
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             DAJohnston

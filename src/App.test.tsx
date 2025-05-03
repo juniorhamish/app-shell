@@ -4,13 +4,9 @@ import App from './App';
 describe('App', () => {
   describe('header bar', () => {
     it('should have a logo', () => {
-      render(<App />);
+      const { container } = render(<App />);
 
-      expect(
-        within(screen.getByRole('banner')).getByRole('img', {
-          name: 'Logo for DAJohnston',
-        }),
-      ).toBeVisible();
+      expect(container).toMatchSnapshot();
     });
     it('should have a title', () => {
       render(<App />);

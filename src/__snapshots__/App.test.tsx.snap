@@ -1,0 +1,39 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`App > header bar > should have a logo 1`] = `
+<div>
+  <div
+    class="MuiContainer-root MuiContainer-maxWidthLg MuiContainer-disableGutters css-ho17r4-MuiContainer-root"
+  >
+    <header
+      class="MuiPaper-root MuiPaper-elevation MuiPaper-elevation4 MuiAppBar-root MuiAppBar-colorPrimary MuiAppBar-positionStatic css-ptdwpq-MuiPaper-root-MuiAppBar-root"
+      style="--Paper-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12);"
+    >
+      <div
+        class="MuiToolbar-root MuiToolbar-gutters MuiToolbar-regular css-1ygil4i-MuiToolbar-root"
+      >
+        <img
+          alt=""
+          class="MuiBox-root css-dks9xx"
+          src="/src/assets/logo-round.png"
+        />
+        <h6
+          class="MuiTypography-root MuiTypography-h6 css-1bv5yfe-MuiTypography-root"
+        >
+          DAJohnston
+        </h6>
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-1uent87-MuiButtonBase-root-MuiButton-root"
+          tabindex="0"
+          type="button"
+        >
+          Sign in
+        </button>
+      </div>
+    </header>
+    <main
+      class="MuiBox-root css-0"
+    />
+  </div>
+</div>
+`;
