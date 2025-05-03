@@ -7,7 +7,9 @@ describe('App', () => {
       render(<App />);
 
       expect(
-        within(screen.getByRole('banner')).getByRole('img', { name: 'Logo' }),
+        within(screen.getByRole('banner')).getByRole('img', {
+          name: 'Logo for DAJohnston',
+        }),
       ).toBeVisible();
     });
     it('should have a title', () => {
