@@ -17,8 +17,8 @@ const theme = createTheme({
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Auth0Provider
-      domain={'dajohnston.eu.auth0.com'}
-      clientId={'IgckwgORISVWwBUI7BQSD2AtIlL2onsX'}
+      domain="dajohnston.eu.auth0.com"
+      clientId="IgckwgORISVWwBUI7BQSD2AtIlL2onsX"
       authorizationParams={{
         redirect_uri: window.location.origin,
       }}

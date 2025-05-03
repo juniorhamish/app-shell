@@ -4,7 +4,7 @@ import logo from './assets/logo-round.png';
 function App() {
   return (
     <Container
-      maxWidth={'lg'}
+      maxWidth="lg"
       disableGutters
       component="main"
       sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
@@ -17,7 +17,9 @@ function App() {
             src={logo}
             alt="Logo"
           />
-          <Typography>Welcome</Typography>
+          <Typography variant="h1" sx={{ fontSize: 18, fontWeight: 'bold' }}>
+            DAJohnston
+          </Typography>
         </Toolbar>
       </AppBar>
     </Container>

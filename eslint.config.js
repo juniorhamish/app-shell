@@ -41,6 +41,7 @@ const reactConfig = [
   {
     rules: {
       'react/react-in-jsx-scope': 'off',
+      'react/jsx-curly-brace-presence': 'error',
     },
   },
 ];
