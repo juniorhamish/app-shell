@@ -1,6 +1,7 @@
 import { render, screen, within } from '@testing-library/react';
 import {
   Auth0ContextInterface,
+  LogoutOptions,
   RedirectLoginOptions,
   useAuth0,
 } from '@auth0/auth0-react';
@@ -41,7 +42,7 @@ describe('App', () => {
       ).not.toBeInTheDocument();
     });
     it('should not show the Sign in button when the user is logged in', () => {
-      vi.mocked(useAuth0).mockReturnValueOnce({
+      vi.mocked(useAuth0).mockReturnValue({
         isAuthenticated: true,
       } as Auth0ContextInterface);
 
@@ -58,7 +59,7 @@ describe('App', () => {
       const loginWithRedirect: (
         options?: RedirectLoginOptions,
       ) => Promise<void> = vi.fn();
-      vi.mocked(useAuth0).mockReturnValueOnce({
+      vi.mocked(useAuth0).mockReturnValue({
         isAuthenticated: false,
         loginWithRedirect,
       } as Auth0ContextInterface);
@@ -73,7 +74,7 @@ describe('App', () => {
       expect(loginWithRedirect).toHaveBeenCalled();
     });
     it('should show a spinner while the authentication status is loading', () => {
-      vi.mocked(useAuth0).mockReturnValueOnce({
+      vi.mocked(useAuth0).mockReturnValue({
         isLoading: true,
       } as Auth0ContextInterface);
 
@@ -82,7 +83,7 @@ describe('App', () => {
       expect(screen.getByRole('progressbar')).toBeVisible();
     });
     it('should show the user avatar when the user is logged in', () => {
-      vi.mocked(useAuth0).mockReturnValueOnce({
+      vi.mocked(useAuth0).mockReturnValue({
         isAuthenticated: true,
         user: { picture: 'https://me.com/avatar' },
       } as Auth0ContextInterface);
@@ -94,6 +95,33 @@ describe('App', () => {
           name: 'User avatar',
         }),
       ).toHaveAttribute('src', 'https://me.com/avatar');
+    });
+    it('should have a Sign out button in the menu that opens when clicking the user avatar', async () => {
+      const logout: (options?: LogoutOptions) => Promise<void> = vi.fn();
+      vi.mocked(useAuth0).mockReturnValue({
+        isAuthenticated: true,
+        user: { picture: 'https://me.com/avatar' },
+        logout,
+      } as Auth0ContextInterface);
+      const user = userEvent.setup();
+
+      render(<App />);
+
+      await user.click(
+        within(banner()).getByRole('img', {
+          name: 'User avatar',
+        }),
+      );
+      await user.click(
+        within(screen.getByRole('menu', { name: 'User menu' })).getByRole(
+          'menuitem',
+          {
+            name: 'Sign out',
+          },
+        ),
+      );
+
+      expect(logout).toHaveBeenCalled();
     });
   });
 });

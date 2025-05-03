@@ -29,7 +29,6 @@ exports[`App > header bar > should have a logo 1`] = `
     </span>
   </div>
   <div
-    aria-busy="true"
     class="MuiContainer-root MuiContainer-maxWidthLg MuiContainer-disableGutters css-ho17r4-MuiContainer-root"
   >
     <header
