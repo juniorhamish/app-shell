@@ -19,7 +19,10 @@ function App() {
             src={logo}
             alt=""
           />
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h1"
+            sx={{ flexGrow: 1, fontWeight: 'medium', fontSize: '1.25rem' }}
+          >
             DAJohnston
           </Typography>
           <Button>Sign in</Button>
