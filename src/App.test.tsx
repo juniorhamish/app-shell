@@ -9,6 +9,8 @@ import App from './App';
 
 vi.mock('@auth0/auth0-react');
 
+const banner = () => screen.getByRole('banner');
+
 describe('App', () => {
   beforeEach(() => {
     vi.mocked(useAuth0).mockReturnValue({} as Auth0ContextInterface);
@@ -22,18 +24,21 @@ describe('App', () => {
     it('should have a title', () => {
       render(<App />);
 
-      expect(
-        within(screen.getByRole('banner')).getByRole('heading'),
-      ).toHaveTextContent('DAJohnston');
+      expect(within(banner()).getByRole('heading')).toHaveTextContent(
+        'DAJohnston',
+      );
     });
     it('should have a Sign in button when the user is not currently logged in', () => {
       render(<App />);
 
       expect(
-        within(screen.getByRole('banner')).getByRole('button', {
+        within(banner()).getByRole('button', {
           name: 'Sign in',
         }),
       ).toBeVisible();
+      expect(
+        within(banner()).queryByTestId('PersonIcon'),
+      ).not.toBeInTheDocument();
     });
     it('should not show the Sign in button when the user is logged in', () => {
       vi.mocked(useAuth0).mockReturnValueOnce({
@@ -43,7 +48,7 @@ describe('App', () => {
       render(<App />);
 
       expect(
-        within(screen.getByRole('banner')).queryByRole('button', {
+        within(banner()).queryByRole('button', {
           name: 'Sign in',
         }),
       ).not.toBeInTheDocument();
@@ -60,7 +65,7 @@ describe('App', () => {
       render(<App />);
 
       await user.click(
-        within(screen.getByRole('banner')).getByRole('button', {
+        within(banner()).getByRole('button', {
           name: 'Sign in',
         }),
       );
@@ -85,7 +90,7 @@ describe('App', () => {
       render(<App />);
 
       expect(
-        within(screen.getByRole('banner')).getByRole('img', {
+        within(banner()).getByRole('img', {
           name: 'User avatar',
         }),
       ).toHaveAttribute('src', 'https://me.com/avatar');
