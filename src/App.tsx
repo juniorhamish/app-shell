@@ -15,7 +15,11 @@ function App() {
   const { isAuthenticated, loginWithRedirect, isLoading } = useAuth0();
   return (
     <>
-      <Backdrop open={isLoading} aria-hidden={!isLoading}>
+      <Backdrop
+        open={isLoading}
+        aria-hidden={!isLoading}
+        sx={(theme) => ({ zIndex: theme.zIndex.drawer + 1 })}
+      >
         <CircularProgress
           color="inherit"
           aria-label="User authentication loading."

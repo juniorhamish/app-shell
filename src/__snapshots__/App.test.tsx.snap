@@ -4,7 +4,7 @@ exports[`App > header bar > should have a logo 1`] = `
 <div>
   <div
     aria-hidden="true"
-    class="MuiBackdrop-root css-1rxxzfv-MuiBackdrop-root"
+    class="MuiBackdrop-root css-14glw4v-MuiBackdrop-root"
     style="opacity: 0; visibility: hidden;"
   >
     <span
