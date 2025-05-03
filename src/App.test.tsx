@@ -1,10 +1,5 @@
 import { render, screen, within } from '@testing-library/react';
-import {
-  Auth0ContextInterface,
-  LogoutOptions,
-  RedirectLoginOptions,
-  useAuth0,
-} from '@auth0/auth0-react';
+import { Auth0ContextInterface, LogoutOptions, RedirectLoginOptions, useAuth0 } from '@auth0/auth0-react';
 import { userEvent } from '@testing-library/user-event';
 import App from './App';
 
@@ -25,9 +20,7 @@ describe('App', () => {
     it('should have a title', () => {
       render(<App />);
 
-      expect(within(banner()).getByRole('heading')).toHaveTextContent(
-        'DAJohnston',
-      );
+      expect(within(banner()).getByRole('heading')).toHaveTextContent('DAJohnston');
     });
     it('should have a Sign in button when the user is not currently logged in', () => {
       render(<App />);
@@ -37,9 +30,7 @@ describe('App', () => {
           name: 'Sign in',
         }),
       ).toBeVisible();
-      expect(
-        within(banner()).queryByTestId('PersonIcon'),
-      ).not.toBeInTheDocument();
+      expect(within(banner()).queryByTestId('PersonIcon')).not.toBeInTheDocument();
     });
     it('should not show the Sign in button when the user is logged in', () => {
       vi.mocked(useAuth0).mockReturnValue({
@@ -56,9 +47,7 @@ describe('App', () => {
     });
     it('should invoke the loginWithRedirect function when the sign in button is clicked', async () => {
       const user = userEvent.setup();
-      const loginWithRedirect: (
-        options?: RedirectLoginOptions,
-      ) => Promise<void> = vi.fn();
+      const loginWithRedirect: (options?: RedirectLoginOptions) => Promise<void> = vi.fn();
       vi.mocked(useAuth0).mockReturnValue({
         isAuthenticated: false,
         loginWithRedirect,
@@ -113,12 +102,9 @@ describe('App', () => {
         }),
       );
       await user.click(
-        within(screen.getByRole('menu', { name: 'User menu' })).getByRole(
-          'menuitem',
-          {
-            name: 'Sign out',
-          },
-        ),
+        within(screen.getByRole('menu', { name: 'User menu' })).getByRole('menuitem', {
+          name: 'Sign out',
+        }),
       );
 
       expect(logout).toHaveBeenCalled();

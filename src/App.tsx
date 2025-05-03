@@ -18,46 +18,24 @@ import { useState } from 'react';
 import logo from './assets/logo-round.png';
 
 function App() {
-  const { isAuthenticated, loginWithRedirect, logout, isLoading, user } =
-    useAuth0();
-  const [userSettingsMenuAnchor, setUserSettingsMenuAnchor] =
-    useState<null | HTMLElement>(null);
+  const { isAuthenticated, loginWithRedirect, logout, isLoading, user } = useAuth0();
+  const [userSettingsMenuAnchor, setUserSettingsMenuAnchor] = useState<null | HTMLElement>(null);
   return (
     <>
-      <Backdrop
-        open={isLoading}
-        aria-hidden={!isLoading}
-        sx={(theme) => ({ zIndex: theme.zIndex.drawer + 1 })}
-      >
-        <CircularProgress
-          color="inherit"
-          aria-label="User authentication loading."
-        />
+      <Backdrop open={isLoading} aria-hidden={!isLoading} sx={(theme) => ({ zIndex: theme.zIndex.drawer + 1 })}>
+        <CircularProgress color="inherit" aria-label="User authentication loading." />
       </Backdrop>
       <Container maxWidth="lg" disableGutters aria-busy={isLoading}>
         <AppBar position="static">
           <Toolbar>
-            <Box
-              sx={{ maxWidth: 60, verticalAlign: 'middle' }}
-              component="img"
-              src={logo}
-              alt=""
-            />
-            <Typography
-              variant="h1"
-              sx={{ flexGrow: 1, fontWeight: 'medium', fontSize: '1.25rem' }}
-            >
+            <Box sx={{ maxWidth: 60, verticalAlign: 'middle' }} component="img" src={logo} alt="" />
+            <Typography variant="h1" sx={{ flexGrow: 1, fontWeight: 'medium', fontSize: '1.25rem' }}>
               DAJohnston
             </Typography>
             {isAuthenticated ? (
               <>
                 <Tooltip title="Open settings">
-                  <IconButton
-                    onClick={(event) =>
-                      setUserSettingsMenuAnchor(event.currentTarget)
-                    }
-                    sx={{ p: 0 }}
-                  >
+                  <IconButton onClick={(event) => setUserSettingsMenuAnchor(event.currentTarget)} sx={{ p: 0 }}>
                     <Avatar alt="User avatar" src={user?.picture} />
                   </IconButton>
                 </Tooltip>
@@ -88,9 +66,7 @@ function App() {
                       await logout();
                     }}
                   >
-                    <Typography sx={{ textAlign: 'center' }}>
-                      Sign out
-                    </Typography>
+                    <Typography sx={{ textAlign: 'center' }}>Sign out</Typography>
                   </MenuItem>
                 </Menu>
               </>

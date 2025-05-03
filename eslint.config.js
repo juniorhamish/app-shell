@@ -2,8 +2,7 @@ import js from '@eslint/js';
 import path from 'node:path';
 import { includeIgnoreFile } from '@eslint/compat';
 import { configs, plugins } from 'eslint-config-airbnb-extended';
-import { rules as prettierConfigRules } from 'eslint-config-prettier';
-import prettierPlugin from 'eslint-plugin-prettier';
+import eslintConfigPrettier from 'eslint-config-prettier/flat';
 import vitest from '@vitest/eslint-plugin';
 import pluginJest from 'eslint-plugin-jest';
 
@@ -12,19 +11,11 @@ export const gitignorePath = path.resolve(projectRoot, '.gitignore');
 
 const jsConfig = [
   // ESLint Recommended Rules
-  {
-    name: 'js/config',
-    ...js.configs.recommended,
-  },
+  js.configs.recommended,
   // Stylistic Plugin
   plugins.stylistic,
   // Import X Plugin
   plugins.importX,
-  {
-    rules: {
-      'import-x/no-unresolved': [2, { ignore: '.(png|webp|jpg|$' }],
-    },
-  },
   // Airbnb Base Recommended Config
   ...configs.base.recommended,
 ];
@@ -55,24 +46,6 @@ const typescriptConfig = [
   ...configs.react.typescript,
 ];
 
-const prettierConfig = [
-  // Prettier Plugin
-  {
-    name: 'prettier/plugin/config',
-    plugins: {
-      prettier: prettierPlugin,
-    },
-  },
-  // Prettier Config
-  {
-    name: 'prettier/config',
-    rules: {
-      ...prettierConfigRules,
-      'prettier/prettier': 'error',
-    },
-  },
-];
-
 const vitestConfig = [
   {
     files: ['**/*.test.*', './vitest-setup.ts'],
@@ -90,13 +63,15 @@ const vitestConfig = [
 export default [
   // Ignore .gitignore files/folder in eslint
   includeIgnoreFile(gitignorePath),
+  {
+    ignores: ['src/__snapshots__'],
+  },
   // Javascript Config
   ...jsConfig,
   // React Config
   ...reactConfig,
   // TypeScript Config
   ...typescriptConfig,
-  // Prettier Config
-  ...prettierConfig,
   ...vitestConfig,
+  eslintConfigPrettier,
 ];

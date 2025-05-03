@@ -10,8 +10,7 @@ export default defineConfig({
     federation({
       name: 'app_shell',
       remotes: {
-        spiceTracker:
-          'https://spice-tracker.dajohnston.co.uk/assets/remoteEntry.js',
+        spiceTracker: 'https://spice-tracker.dajohnston.co.uk/assets/remoteEntry.js',
       },
       shared: ['react', 'react-dom', '@auth0/auth0-react'],
     }),
