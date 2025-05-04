@@ -41,7 +41,7 @@ function App() {
             </Typography>
             {isAuthenticated ? (
               <>
-                <Tooltip title={t('open-settings-tooltip')}>
+                <Tooltip title={t('open-settings-tooltip')} enterDelay={500} enterNextDelay={500} leaveDelay={200}>
                   <IconButton
                     aria-haspopup="menu"
                     aria-controls={menuId}
