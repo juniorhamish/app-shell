@@ -14,12 +14,13 @@ import {
   Typography,
 } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import logo from './assets/logo-round.png';
 
 function App() {
   const { t } = useTranslation();
+  const menuId = useId();
   const { isAuthenticated, loginWithRedirect, logout, isLoading, user } = useAuth0();
   const [userSettingsMenuAnchor, setUserSettingsMenuAnchor] = useState<null | HTMLElement>(null);
   return (
@@ -37,7 +38,13 @@ function App() {
             {isAuthenticated ? (
               <>
                 <Tooltip title={t('open-settings-tooltip')}>
-                  <IconButton onClick={(event) => setUserSettingsMenuAnchor(event.currentTarget)} sx={{ p: 0 }}>
+                  <IconButton
+                    aria-haspopup="menu"
+                    aria-controls={menuId}
+                    aria-expanded={Boolean(userSettingsMenuAnchor)}
+                    onClick={(event) => setUserSettingsMenuAnchor(event.currentTarget)}
+                    sx={{ p: 0 }}
+                  >
                     <Avatar alt={t('avatar-alt-text')} src={user?.picture} />
                   </IconButton>
                 </Tooltip>
@@ -45,6 +52,7 @@ function App() {
                   slotProps={{
                     list: {
                       'aria-label': t('user-menu'),
+                      id: menuId,
                     },
                   }}
                   sx={{ mt: '5px' }}
@@ -62,7 +70,7 @@ function App() {
                   }}
                 >
                   <MenuItem
-                    key="Sign out"
+                    key="sign-out"
                     onClick={async () => {
                       setUserSettingsMenuAnchor(null);
                       await logout();
