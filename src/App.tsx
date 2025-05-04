@@ -15,9 +15,11 @@ import {
 } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import logo from './assets/logo-round.png';
 
 function App() {
+  const { t } = useTranslation();
   const { isAuthenticated, loginWithRedirect, logout, isLoading, user } = useAuth0();
   const [userSettingsMenuAnchor, setUserSettingsMenuAnchor] = useState<null | HTMLElement>(null);
   return (
@@ -34,7 +36,7 @@ function App() {
             </Typography>
             {isAuthenticated ? (
               <>
-                <Tooltip title="Open settings">
+                <Tooltip title={t('open-settings-tooltip')}>
                   <IconButton onClick={(event) => setUserSettingsMenuAnchor(event.currentTarget)} sx={{ p: 0 }}>
                     <Avatar alt="User avatar" src={user?.picture} />
                   </IconButton>
@@ -66,7 +68,7 @@ function App() {
                       await logout();
                     }}
                   >
-                    <Typography sx={{ textAlign: 'center' }}>Sign out</Typography>
+                    <Typography sx={{ textAlign: 'center' }}>{t('sign-out')}</Typography>
                   </MenuItem>
                 </Menu>
               </>

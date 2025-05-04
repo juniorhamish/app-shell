@@ -48,7 +48,7 @@ const typescriptConfig = [
 
 const vitestConfig = [
   {
-    files: ['**/*.test.*', './vitest-setup.ts'],
+    files: ['**/*.test.*', './vitest-setup.ts', './src/test-util/TranslationsWrapper.tsx'],
     plugins: {
       vitest,
       jest: pluginJest,
