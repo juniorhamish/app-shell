@@ -1,4 +1,8 @@
 {
   "open-settings-tooltip": "Open settings",
-  "sign-out": "Sign out"
+  "sign-out": "Sign out",
+  "sign-in": "Sign in",
+  "authentication-loading": "User authentication loading.",
+  "avatar-alt-text": "User avatar",
+  "user-menu": "User menu"
 }

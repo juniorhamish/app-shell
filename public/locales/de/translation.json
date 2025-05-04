@@ -1,4 +1,8 @@
 {
   "open-settings-tooltip": "Einstellungen öffnen",
-  "sign-out": "Abmelden"
+  "sign-out": "Abmelden",
+  "sign-in": "Anmelden",
+  "authentication-loading": "Benutzerauthentifizierung Laden.",
+  "avatar-alt-text": "Benutzer Avatar",
+  "user-menu": "Benutzermenü"
 }

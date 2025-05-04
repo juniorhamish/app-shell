@@ -25,7 +25,7 @@ function App() {
   return (
     <>
       <Backdrop open={isLoading} aria-hidden={!isLoading} sx={(theme) => ({ zIndex: theme.zIndex.drawer + 1 })}>
-        <CircularProgress color="inherit" aria-label="User authentication loading." />
+        <CircularProgress color="inherit" aria-label={t('authentication-loading')} />
       </Backdrop>
       <Container maxWidth="lg" disableGutters aria-busy={isLoading}>
         <AppBar position="static">
@@ -38,13 +38,13 @@ function App() {
               <>
                 <Tooltip title={t('open-settings-tooltip')}>
                   <IconButton onClick={(event) => setUserSettingsMenuAnchor(event.currentTarget)} sx={{ p: 0 }}>
-                    <Avatar alt="User avatar" src={user?.picture} />
+                    <Avatar alt={t('avatar-alt-text')} src={user?.picture} />
                   </IconButton>
                 </Tooltip>
                 <Menu
                   slotProps={{
                     list: {
-                      'aria-label': 'User menu',
+                      'aria-label': t('user-menu'),
                     },
                   }}
                   sx={{ mt: '5px' }}
@@ -73,7 +73,7 @@ function App() {
                 </Menu>
               </>
             ) : (
-              <Button onClick={() => loginWithRedirect()}>Sign in</Button>
+              <Button onClick={() => loginWithRedirect()}>{t('sign-in')}</Button>
             )}
           </Toolbar>
         </AppBar>
