@@ -6,7 +6,9 @@ import {
   Button,
   CircularProgress,
   Container,
+  Divider,
   IconButton,
+  ListItemIcon,
   Menu,
   MenuItem,
   Toolbar,
@@ -16,6 +18,8 @@ import {
 import { useAuth0 } from '@auth0/auth0-react';
 import { useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import ExpandMoreSharpIcon from '@mui/icons-material/ExpandMoreSharp';
+import Logout from '@mui/icons-material/Logout';
 import logo from './assets/logo-round.png';
 
 function App() {
@@ -43,9 +47,11 @@ function App() {
                     aria-controls={menuId}
                     aria-expanded={Boolean(userSettingsMenuAnchor)}
                     onClick={(event) => setUserSettingsMenuAnchor(event.currentTarget)}
-                    sx={{ p: 0 }}
+                    sx={{ gap: 1, borderRadius: 0 }}
                   >
                     <Avatar alt={t('avatar-alt-text')} src={user?.picture} />
+                    <Typography>{user?.name}</Typography>
+                    <ExpandMoreSharpIcon />
                   </IconButton>
                 </Tooltip>
                 <Menu
@@ -55,7 +61,7 @@ function App() {
                       id: menuId,
                     },
                   }}
-                  sx={{ mt: '5px' }}
+                  sx={{ mt: '5px', width: '5000px' }}
                   open={Boolean(userSettingsMenuAnchor)}
                   onClose={() => setUserSettingsMenuAnchor(null)}
                   anchorEl={userSettingsMenuAnchor}
@@ -70,12 +76,24 @@ function App() {
                   }}
                 >
                   <MenuItem
+                    key="my-profile"
+                    onClick={async () => {
+                      setUserSettingsMenuAnchor(null);
+                    }}
+                  >
+                    <Typography sx={{ textAlign: 'center' }}>Profile Settings</Typography>
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem
                     key="sign-out"
                     onClick={async () => {
                       setUserSettingsMenuAnchor(null);
                       await logout();
                     }}
                   >
+                    <ListItemIcon>
+                      <Logout fontSize="small" />
+                    </ListItemIcon>
                     <Typography sx={{ textAlign: 'center' }}>{t('sign-out')}</Typography>
                   </MenuItem>
                 </Menu>

@@ -81,10 +81,20 @@ describe('App', () => {
       render(<App />);
 
       expect(
-        within(banner()).getByRole('img', {
+        within(within(banner()).getByRole('button', { name: 'Open settings' })).getByRole('img', {
           name: 'User avatar',
         }),
       ).toHaveAttribute('src', 'https://me.com/avatar');
+    });
+    it('should show the user name in the settings button when the user is logged in', () => {
+      vi.mocked(useAuth0).mockReturnValue({
+        isAuthenticated: true,
+        user: { name: 'David Johnston' },
+      } as Auth0ContextInterface);
+
+      render(<App />);
+
+      expect(within(banner()).getByRole('button', { name: 'Open settings' })).toHaveTextContent('David Johnston');
     });
     it('should have a Sign out button in the menu that opens when clicking the user avatar', async () => {
       const logout: (options?: LogoutOptions) => Promise<void> = vi.fn();
