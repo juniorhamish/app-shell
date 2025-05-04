@@ -12,7 +12,7 @@ await i18n
     fallbackLng: 'en',
     debug: true,
     backend: {
-      loadPath: 'src/assets/locales/{{lng}}/{{ns}}.json',
+      loadPath: '/locales/{{lng}}/{{ns}}.json',
     },
     detection: {
       order: ['querystring', 'navigator', 'localStorage'],
