@@ -81,7 +81,7 @@ function App() {
                       setUserSettingsMenuAnchor(null);
                     }}
                   >
-                    <Typography sx={{ textAlign: 'center' }}>Profile Settings</Typography>
+                    <Typography sx={{ textAlign: 'center' }}>{t('profile-settings')}</Typography>
                   </MenuItem>
                   <Divider />
                   <MenuItem

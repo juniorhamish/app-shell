@@ -4,5 +4,6 @@
   "sign-in": "Sign in",
   "authentication-loading": "User authentication loading.",
   "avatar-alt-text": "User avatar",
-  "user-menu": "User menu"
+  "user-menu": "User menu",
+  "profile-settings": "Profile Settings"
 }
