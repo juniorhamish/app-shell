@@ -5,5 +5,19 @@
   "authentication-loading": "User authentication loading.",
   "avatar-alt-text": "User avatar",
   "user-menu": "User menu",
-  "profile-settings": "Profile Settings"
+  "profile": {
+    "settings": "Profile Settings",
+    "heading": "Edit Profile",
+    "sub-heading": "Update your profile information below",
+    "name-text-field": "Name",
+    "nickname-text-field": "Nickname",
+    "avatar-option": {
+      "avatar": "Avatar",
+      "avatar-url": "Avatar URL",
+      "gravatar": "Gravatar",
+      "gravatar-email-address": "Gravatar Email Address"
+    },
+    "cancel-edits": "Cancel",
+    "save-edits": "Save Changes"
+  }
 }

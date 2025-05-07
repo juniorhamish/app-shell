@@ -2,8 +2,22 @@
   "open-settings-tooltip": "Einstellungen öffnen",
   "sign-out": "Abmelden",
   "sign-in": "Anmelden",
-  "authentication-loading": "Benutzerauthentifizierung Laden.",
+  "authentication-loading": "Benutzerauthentifizierung wird geladen.",
   "avatar-alt-text": "Benutzer Avatar",
   "user-menu": "Benutzermenü",
-  "profile-settings": "Profileinstellungen"
+  "profile": {
+    "settings": "Profileinstellungen",
+    "heading": "Profil bearbeiten",
+    "sub-heading": "Aktualisieren Sie unten Ihre Profilinformationen",
+    "name-text-field": "Name",
+    "nickname-text-field": "Nickname",
+    "avatar-option": {
+      "avatar": "Avatar",
+      "avatar-url": "Avatar URL",
+      "gravatar": "Gravatar",
+      "gravatar-email-address": "Gravatar Email Addresse"
+    },
+    "cancel-edits": "Abbrechen",
+    "save-edits": "Speichern"
+  }
 }

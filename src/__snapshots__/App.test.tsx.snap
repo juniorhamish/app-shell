@@ -38,16 +38,20 @@ exports[`App > header bar > should have a logo 1`] = `
       <div
         class="MuiToolbar-root MuiToolbar-gutters MuiToolbar-regular css-1ygil4i-MuiToolbar-root"
       >
-        <img
-          alt=""
-          class="MuiBox-root css-dks9xx"
-          src="/src/assets/logo-round.png"
-        />
-        <h1
-          class="MuiTypography-root MuiTypography-h1 css-1dnrqjy-MuiTypography-root"
+        <div
+          class="MuiBox-root css-11k65ol"
         >
-          DAJohnston
-        </h1>
+          <img
+            alt=""
+            class="MuiBox-root css-dks9xx"
+            src="/src/assets/logo-round.png"
+          />
+          <h1
+            class="MuiTypography-root MuiTypography-h1 css-qnhlpx-MuiTypography-root"
+          >
+            DAJohnston
+          </h1>
+        </div>
         <button
           class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textInherit MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorInherit MuiButton-root MuiButton-text MuiButton-textInherit MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorInherit css-plnrbk-MuiButtonBase-root-MuiButton-root"
           tabindex="0"

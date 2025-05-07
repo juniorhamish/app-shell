@@ -81,7 +81,7 @@ export default function AppBar() {
                   toggleDrawer();
                 }}
               >
-                <Typography sx={{ textAlign: 'center' }}>{t('profile-settings')}</Typography>
+                <Typography sx={{ textAlign: 'center' }}>{t('profile.settings')}</Typography>
               </MenuItem>
               <Divider />
               <MenuItem
