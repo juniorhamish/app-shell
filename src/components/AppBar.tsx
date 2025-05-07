@@ -29,10 +29,15 @@ export default function AppBar() {
   return (
     <MuiAppBar position="static">
       <Toolbar>
-        <Box sx={{ maxWidth: 60, verticalAlign: 'middle' }} component="img" src={logo} alt="" />
-        <Typography variant="h1" sx={{ flexGrow: 1, fontWeight: 'medium', fontSize: '1.25rem' }}>
-          DAJohnston
-        </Typography>
+        <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          <Box sx={{ maxWidth: 60, verticalAlign: 'middle' }} component="img" src={logo} alt="" />
+          <Typography
+            variant="h1"
+            sx={{ fontWeight: 'medium', fontSize: '1.25rem', display: { xs: 'none', sm: 'block' } }}
+          >
+            DAJohnston
+          </Typography>
+        </Box>
         {isAuthenticated ? (
           <>
             <Tooltip title={t('open-settings-tooltip')} enterDelay={500} enterNextDelay={500} leaveDelay={200}>
@@ -44,7 +49,7 @@ export default function AppBar() {
                 sx={{ gap: 1, borderRadius: 0 }}
               >
                 <Avatar alt={t('avatar-alt-text')} src={user?.picture} />
-                <Typography>{user?.name}</Typography>
+                <Typography sx={{ display: { xs: 'none', sm: 'block' } }}>{user?.name}</Typography>
                 <ExpandMoreSharpIcon />
               </IconButton>
             </Tooltip>
