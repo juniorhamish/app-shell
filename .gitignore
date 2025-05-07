@@ -24,3 +24,4 @@ reports
 *.njsproj
 *.sln
 *.sw?
+/stats.html
