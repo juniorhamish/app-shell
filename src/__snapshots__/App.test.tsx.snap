@@ -29,7 +29,7 @@ exports[`App > header bar > should have a logo 1`] = `
     </span>
   </div>
   <div
-    class="MuiContainer-root MuiContainer-maxWidthLg MuiContainer-disableGutters css-ho17r4-MuiContainer-root"
+    class="MuiContainer-root MuiContainer-disableGutters css-1aa3h9d-MuiContainer-root"
   >
     <header
       class="MuiPaper-root MuiPaper-elevation MuiPaper-elevation4 MuiAppBar-root MuiAppBar-colorPrimary MuiAppBar-positionStatic css-ptdwpq-MuiPaper-root-MuiAppBar-root"
@@ -49,7 +49,7 @@ exports[`App > header bar > should have a logo 1`] = `
           DAJohnston
         </h1>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-1uent87-MuiButtonBase-root-MuiButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textInherit MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorInherit MuiButton-root MuiButton-text MuiButton-textInherit MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorInherit css-plnrbk-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >
