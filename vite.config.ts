@@ -8,7 +8,9 @@ import { visualizer } from 'rollup-plugin-visualizer';
 export default defineConfig({
   plugins: [
     react(),
-    visualizer(),
+    visualizer({
+      filename: './reports/stats.html',
+    }),
     federation({
       name: 'app_shell',
       remotes: {
