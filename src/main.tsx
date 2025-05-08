@@ -22,6 +22,9 @@ createRoot(document.getElementById('root')!).render(
       clientId="IgckwgORISVWwBUI7BQSD2AtIlL2onsX"
       authorizationParams={{
         redirect_uri: window.location.origin,
+        scope: 'openid profile offline_access',
+        responseType: 'token id_token',
+        audience: 'https://user-service.dajohnston.co.uk',
       }}
       useRefreshTokens
       cacheLocation="localstorage"
