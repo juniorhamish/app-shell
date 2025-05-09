@@ -5,6 +5,7 @@ import { configs, plugins } from 'eslint-config-airbnb-extended';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';
 import vitest from '@vitest/eslint-plugin';
 import pluginJest from 'eslint-plugin-jest';
+import tanStackPluginQuery from '@tanstack/eslint-plugin-query';
 
 export const projectRoot = path.resolve('.');
 export const gitignorePath = path.resolve(projectRoot, '.gitignore');
@@ -64,7 +65,7 @@ export default [
   // Ignore .gitignore files/folder in eslint
   includeIgnoreFile(gitignorePath),
   {
-    ignores: ['src/__snapshots__'],
+    ignores: ['src/__snapshots__', 'src/client'],
   },
   // Javascript Config
   ...jsConfig,
@@ -73,5 +74,12 @@ export default [
   // TypeScript Config
   ...typescriptConfig,
   ...vitestConfig,
+  {
+    files: ['openapi-ts.config.ts'],
+    rules: {
+      'import-x/no-extraneous-dependencies': [2, { devDependencies: true }],
+    },
+  },
+  ...tanStackPluginQuery.configs['flat/recommended'],
   eslintConfigPrettier,
 ];

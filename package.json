@@ -11,15 +11,19 @@
     "prettier:check": "prettier . --check",
     "prettier:write": "prettier . --write",
     "test": "vitest",
-    "test:ci": "vitest run --coverage"
+    "test:ci": "vitest run --coverage",
+    "openapi-ts": "openapi-ts"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.3.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@fontsource/roboto": "^5.2.5",
+    "@hey-api/client-fetch": "^0.10.0",
     "@mui/icons-material": "^7.0.2",
     "@mui/material": "^7.0.2",
+    "@tanstack/react-query": "^5.75.5",
+    "@tanstack/react-query-devtools": "^5.75.5",
     "i18next": "^25.0.2",
     "i18next-browser-languagedetector": "^8.1.0",
     "i18next-http-backend": "^3.0.2",
@@ -30,8 +34,10 @@
   "devDependencies": {
     "@eslint/compat": "^1.2.9",
     "@eslint/js": "^9.26.0",
+    "@hey-api/openapi-ts": "^0.67.3",
     "@originjs/vite-plugin-federation": "^1.4.1",
     "@stylistic/eslint-plugin": "^3.1.0",
+    "@tanstack/eslint-plugin-query": "^5.74.7",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",

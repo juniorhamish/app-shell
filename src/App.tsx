@@ -4,12 +4,13 @@ import { useTranslation } from 'react-i18next';
 import AppBar from './components/AppBar';
 import Drawer from './components/Drawer';
 import { DrawerProvider } from './components/DrawerProvider';
+import { UserInfoProvider } from './components/UserInfoContextProvider';
 
 function App() {
   const { t } = useTranslation();
   const { isLoading } = useAuth0();
   return (
-    <>
+    <UserInfoProvider>
       <Backdrop open={isLoading} aria-hidden={!isLoading} sx={(theme) => ({ zIndex: theme.zIndex.drawer + 1 })}>
         <CircularProgress color="inherit" aria-label={t('authentication-loading')} />
       </Backdrop>
@@ -20,7 +21,7 @@ function App() {
           <Drawer />
         </Container>
       </DrawerProvider>
-    </>
+    </UserInfoProvider>
   );
 }
 
