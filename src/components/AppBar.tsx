@@ -88,7 +88,7 @@ export default function AppBar() {
                 key="sign-out"
                 onClick={async () => {
                   setUserSettingsMenuAnchor(null);
-                  await logout();
+                  await logout({ logoutParams: { returnTo: window.location.origin } });
                 }}
               >
                 <ListItemIcon>
