@@ -10,7 +10,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDrawer } from './DrawerProvider';
 import { useUserInfo } from './UserInfoContextProvider';
@@ -22,6 +22,13 @@ export default function Drawer() {
   const { firstName, lastName, gravatarEmailAddress, nickname, picture, saveUserInfoChanges } = useUserInfo();
   const [currentFirstName, setCurrentFirstName] = useState(firstName);
   const [currentLastName, setCurrentLastName] = useState(lastName);
+
+  useEffect(() => {
+    setCurrentFirstName(firstName);
+  }, [firstName]);
+  useEffect(() => {
+    setCurrentLastName(lastName);
+  }, [lastName]);
   return (
     <MuiDrawer
       anchor="right"
