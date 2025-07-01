@@ -1,10 +1,10 @@
-import { createContext, ReactNode, useCallback, useContext, useMemo } from 'react';
+import { createContext, ReactNode, useContext, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useAuth0 } from '@auth0/auth0-react';
-import { getUserInfo, PatchUserInfoWritable, updateUserInfo, UserInfoReadable } from '../client';
+import { AvatarImageSource, PatchableUserInfo, UserInfo } from '../service/types';
+import useUserInfoService from '../service/useUserInfo';
 
 const UserInfoContext = createContext<
-  UserInfoReadable & { saveUserInfoChanges: (newUserInfo: PatchUserInfoWritable) => Promise<void> }
+  UserInfo & { updateUserInfo: (newUserInfo: PatchableUserInfo) => Promise<UserInfo> }
 >({
   email: '',
   gravatarEmailAddress: '',
@@ -12,27 +12,16 @@ const UserInfoContext = createContext<
   lastName: '',
   picture: '',
   nickname: '',
-  saveUserInfoChanges: () => Promise.resolve(),
+  avatarImageSource: AvatarImageSource.GRAVATAR,
+  updateUserInfo: () => Promise.reject(),
 });
 export function UserInfoProvider({ children }: { children: ReactNode }) {
-  const { getAccessTokenSilently } = useAuth0();
-  const { data } = useQuery<UserInfoReadable>({
+  const { getUserInfo, updateUserInfo } = useUserInfoService();
+  const { data } = useQuery<UserInfo>({
     queryKey: ['user-info'],
-    queryFn: async () => {
-      const result = await getUserInfo({ headers: { Authorization: `Bearer ${await getAccessTokenSilently()}` } });
-      return result.data ?? {};
-    },
+    queryFn: getUserInfo,
     throwOnError: true,
   });
-  const saveUserInfoChanges = useCallback(
-    async (newUserInfo: PatchUserInfoWritable) => {
-      await updateUserInfo({
-        body: newUserInfo,
-        headers: { Authorization: `Bearer ${await getAccessTokenSilently()}` },
-      });
-    },
-    [getAccessTokenSilently],
-  );
   const userInfo = useMemo(() => {
     if (!data) {
       return {
@@ -42,15 +31,14 @@ export function UserInfoProvider({ children }: { children: ReactNode }) {
         lastName: '',
         picture: '',
         nickname: '',
-        saveUserInfoChanges,
+        avatarImageSource: AvatarImageSource.GRAVATAR,
+        updateUserInfo,
       };
     }
-    return { ...data, saveUserInfoChanges };
-  }, [data, saveUserInfoChanges]);
+    return { ...data, updateUserInfo };
+  }, [data, updateUserInfo]);
   return <UserInfoContext.Provider value={userInfo}>{children}</UserInfoContext.Provider>;
 }
 
 export const useUserInfo = () =>
-  useContext<UserInfoReadable & { saveUserInfoChanges: (newUserInfo: PatchUserInfoWritable) => Promise<void> }>(
-    UserInfoContext,
-  );
+  useContext<UserInfo & { updateUserInfo: (newUserInfo: PatchableUserInfo) => Promise<UserInfo> }>(UserInfoContext);

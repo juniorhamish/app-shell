@@ -11,8 +11,7 @@
     "prettier:check": "prettier . --check",
     "prettier:write": "prettier . --write",
     "test": "vitest",
-    "test:ci": "vitest run --coverage",
-    "openapi-ts": "openapi-ts"
+    "test:ci": "vitest run --coverage"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.3.0",
@@ -34,7 +33,6 @@
   "devDependencies": {
     "@eslint/compat": "^1.2.9",
     "@eslint/js": "^9.26.0",
-    "@hey-api/openapi-ts": "^0.67.3",
     "@originjs/vite-plugin-federation": "^1.4.1",
     "@stylistic/eslint-plugin": "^3.1.0",
     "@tanstack/eslint-plugin-query": "^5.74.7",

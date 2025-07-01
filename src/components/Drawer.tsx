@@ -19,7 +19,7 @@ export default function Drawer() {
   const { drawerOpen, toggleDrawer } = useDrawer();
   const { t } = useTranslation();
   const [avatarSource, setAvatarSource] = useState('avatar');
-  const { firstName, lastName, gravatarEmailAddress, nickname, picture, saveUserInfoChanges } = useUserInfo();
+  const { firstName, lastName, gravatarEmailAddress, nickname, picture, updateUserInfo } = useUserInfo();
   const [currentFirstName, setCurrentFirstName] = useState(firstName);
   const [currentLastName, setCurrentLastName] = useState(lastName);
 
@@ -77,7 +77,7 @@ export default function Drawer() {
           <Button variant="outlined">{t('profile.cancel-edits')}</Button>
           <Button
             variant="contained"
-            onClick={() => saveUserInfoChanges({ firstName: currentFirstName, lastName: currentLastName })}
+            onClick={() => updateUserInfo({ firstName: currentFirstName, lastName: currentLastName })}
           >
             {t('profile.save-edits')}
           </Button>

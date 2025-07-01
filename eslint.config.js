@@ -74,12 +74,6 @@ export default [
   // TypeScript Config
   ...typescriptConfig,
   ...vitestConfig,
-  {
-    files: ['openapi-ts.config.ts'],
-    rules: {
-      'import-x/no-extraneous-dependencies': [2, { devDependencies: true }],
-    },
-  },
   ...tanStackPluginQuery.configs['flat/recommended'],
   eslintConfigPrettier,
 ];
