@@ -12,8 +12,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDrawer } from './DrawerProvider';
-import { useUserInfo } from './UserInfoContextProvider';
+import { useDrawer, useUserInfo } from '../context';
 
 export default function Drawer() {
   const { drawerOpen, toggleDrawer } = useDrawer();

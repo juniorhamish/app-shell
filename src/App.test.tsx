@@ -2,7 +2,7 @@ import { screen, within } from '@testing-library/react';
 import { Auth0ContextInterface, LogoutOptions, RedirectLoginOptions, useAuth0 } from '@auth0/auth0-react';
 import { userEvent } from '@testing-library/user-event';
 import App from './App';
-import { render } from './test-util/TranslationsWrapper';
+import render from './test-util/i18NextTestWrapper';
 
 vi.mock('@auth0/auth0-react');
 

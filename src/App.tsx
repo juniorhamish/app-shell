@@ -3,8 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useTranslation } from 'react-i18next';
 import AppBar from './components/AppBar';
 import Drawer from './components/Drawer';
-import { DrawerProvider } from './components/DrawerProvider';
-import { UserInfoProvider } from './components/UserInfoContextProvider';
+import { DrawerProvider, UserInfoProvider } from './context';
 
 function App() {
   const { t } = useTranslation();

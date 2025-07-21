@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 import ExpandMoreSharpIcon from '@mui/icons-material/ExpandMoreSharp';
 import Logout from '@mui/icons-material/Logout';
 import logo from '../assets/logo-round.png';
-import { useDrawer } from './DrawerProvider';
+import { useDrawer } from '../context';
 
 export default function AppBar() {
   const { t } = useTranslation();

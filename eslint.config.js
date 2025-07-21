@@ -4,7 +4,7 @@ import { includeIgnoreFile } from '@eslint/compat';
 import { configs, plugins } from 'eslint-config-airbnb-extended';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';
 import vitest from '@vitest/eslint-plugin';
-import pluginJest from 'eslint-plugin-jest';
+import reactRefresh from 'eslint-plugin-react-refresh';
 import tanStackPluginQuery from '@tanstack/eslint-plugin-query';
 
 export const projectRoot = path.resolve('.');
@@ -31,9 +31,15 @@ const reactConfig = [
   // Airbnb React Recommended Config
   ...configs.react.recommended,
   {
+    plugins: {
+      'react-refresh': reactRefresh,
+    },
+
     rules: {
       'react/react-in-jsx-scope': 'off',
       'react/jsx-curly-brace-presence': 'error',
+      // React Refresh rules for better HMR
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     },
   },
 ];
@@ -49,14 +55,17 @@ const typescriptConfig = [
 
 const vitestConfig = [
   {
-    files: ['**/*.test.*', './vitest-setup.ts', './src/test-util/TranslationsWrapper.tsx'],
+    files: ['**/*.test.*', '**/*.spec.*', './vitest-setup.ts', './src/test-util/**/*.tsx', './src/test-util/**/*.ts'],
     plugins: {
       vitest,
-      jest: pluginJest,
     },
     rules: {
       ...vitest.configs.recommended.rules,
-      'import-x/no-extraneous-dependencies': [2, { devDependencies: true }],
+      'import-x/no-extraneous-dependencies': ['error', { devDependencies: true }],
+      // Additional Vitest-specific rules
+      'vitest/prefer-to-be': 'error',
+      'vitest/prefer-to-have-length': 'error',
+      'vitest/prefer-strict-equal': 'error',
     },
   },
 ];
@@ -65,7 +74,7 @@ export default [
   // Ignore .gitignore files/folder in eslint
   includeIgnoreFile(gitignorePath),
   {
-    ignores: ['src/__snapshots__', 'src/client'],
+    ignores: ['src/__snapshots__', 'src/client', 'dist/**/*', 'coverage/**/*'],
   },
   // Javascript Config
   ...jsConfig,
@@ -73,7 +82,10 @@ export default [
   ...reactConfig,
   // TypeScript Config
   ...typescriptConfig,
+  // Testing Config
   ...vitestConfig,
+  // TanStack Query Config
   ...tanStackPluginQuery.configs['flat/recommended'],
+  // Prettier Config (should be last to override conflicting rules)
   eslintConfigPrettier,
 ];
