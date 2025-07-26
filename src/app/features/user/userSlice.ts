@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { UserInfo } from '../../../service/types';
-import type { RootState } from '../../store';
 import authenticatedFetch from '../../../service/AuthenticatedFetch';
 import createAppAsyncThunk from '../../withTypes';
 
@@ -27,7 +26,11 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {},
-  extraReducers: (builder) =>
+  selectors: {
+    selectUserInfoStatus: (state) => state.status,
+    selectUserFirstName: (state) => state.userInfo?.firstName,
+  },
+  extraReducers(builder) {
     builder
       .addCase(loadUserInfo.pending, (state) => {
         state.status = 'loading';
@@ -38,9 +41,9 @@ const userSlice = createSlice({
       })
       .addCase(loadUserInfo.rejected, (state) => {
         state.status = 'failed';
-      }),
+      });
+  },
 });
 
 export default userSlice.reducer;
-export const selectUserInfoStatus = (state: RootState) => state.user.status;
-export const selectUserFirstName = (state: RootState) => state.user.userInfo?.firstName;
+export const { selectUserInfoStatus, selectUserFirstName } = userSlice.selectors;
