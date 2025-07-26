@@ -1,13 +1,16 @@
 import { Backdrop, Box, CircularProgress, Container } from '@mui/material';
-import { useAuth0 } from '@auth0/auth0-react';
 import { useTranslation } from 'react-i18next';
-import AppBar from '../components/AppBar';
+import AppBar from './features/app-bar/AppBar';
 import Drawer from './features/drawer/Drawer';
 import { UserInfoProvider } from '../context';
+import useAuth0Listener from './features/auth/useAuth0Listener';
+import { useAppSelector } from './hooks';
+import { authState } from './features/auth/authSlice';
 
-function App() {
+export default function App() {
   const { t } = useTranslation();
-  const { isLoading } = useAuth0();
+  useAuth0Listener();
+  const { isLoading } = useAppSelector(authState);
   return (
     <UserInfoProvider>
       <Backdrop open={isLoading} aria-hidden={!isLoading} sx={(theme) => ({ zIndex: theme.zIndex.drawer + 1 })}>
@@ -21,5 +24,3 @@ function App() {
     </UserInfoProvider>
   );
 }
-
-export default App;
