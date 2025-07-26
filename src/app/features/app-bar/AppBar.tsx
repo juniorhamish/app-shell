@@ -17,15 +17,18 @@ import { useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ExpandMoreSharpIcon from '@mui/icons-material/ExpandMoreSharp';
 import Logout from '@mui/icons-material/Logout';
-import logo from '../assets/logo-round.png';
-import { toggleDrawer } from '../app/features/drawer/drawerSlice';
-import { useAppDispatch } from '../app/hooks';
+import logo from '../../../assets/logo-round.png';
+import { toggleDrawer } from '../drawer/drawerSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { selectIsAuthenticated, selectUser } from '../auth/authSlice';
 
 export default function AppBar() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const menuId = useId();
-  const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
+  const { loginWithRedirect, logout } = useAuth0();
   const [userSettingsMenuAnchor, setUserSettingsMenuAnchor] = useState<null | HTMLElement>(null);
   return (
     <MuiAppBar position="static">

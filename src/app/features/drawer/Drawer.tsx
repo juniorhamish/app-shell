@@ -13,11 +13,11 @@ import {
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUserInfo } from '../../../context';
-import { isDrawerOpen, toggleDrawer } from './drawerSlice';
+import { selectIsDrawerOpen, toggleDrawer } from './drawerSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
 export default function Drawer() {
-  const drawerOpen = useAppSelector(isDrawerOpen);
+  const drawerOpen = useAppSelector(selectIsDrawerOpen);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const [avatarSource, setAvatarSource] = useState('avatar');

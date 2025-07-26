@@ -1,7 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import drawerReducer from './features/drawer/drawerSlice';
+import authReducer from './features/auth/authSlice';
 
 const rootReducer = combineReducers({
+  auth: authReducer,
   drawer: drawerReducer,
 });
 

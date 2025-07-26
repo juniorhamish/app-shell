@@ -20,5 +20,5 @@ export const drawerSlice = createSlice({
 });
 
 export const { toggleDrawer } = drawerSlice.actions;
-export const isDrawerOpen = (state: RootState) => state.drawer.open;
+export const selectIsDrawerOpen = (state: RootState) => state.drawer.open;
 export default drawerSlice.reducer;
