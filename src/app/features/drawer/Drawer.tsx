@@ -12,16 +12,26 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useUserInfo } from '../../../context';
 import { selectIsDrawerOpen, toggleDrawer } from './drawerSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import {
+  selectGravatarEmailAddress,
+  selectNickname,
+  selectPicture,
+  selectUserFirstName,
+  selectUserLastName,
+} from '../user/userSlice';
 
 export default function Drawer() {
   const drawerOpen = useAppSelector(selectIsDrawerOpen);
   const dispatch = useAppDispatch();
+  const firstName = useAppSelector(selectUserFirstName);
+  const lastName = useAppSelector(selectUserLastName);
+  const nickname = useAppSelector(selectNickname);
+  const picture = useAppSelector(selectPicture);
+  const gravatarEmailAddress = useAppSelector(selectGravatarEmailAddress);
   const { t } = useTranslation();
   const [avatarSource, setAvatarSource] = useState('avatar');
-  const { firstName, lastName, gravatarEmailAddress, nickname, picture, updateUserInfo } = useUserInfo();
   const [currentFirstName, setCurrentFirstName] = useState(firstName);
   const [currentLastName, setCurrentLastName] = useState(lastName);
 
@@ -77,10 +87,7 @@ export default function Drawer() {
         )}
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: '16px' }}>
           <Button variant="outlined">{t('profile.cancel-edits')}</Button>
-          <Button
-            variant="contained"
-            onClick={() => updateUserInfo({ firstName: currentFirstName, lastName: currentLastName })}
-          >
+          <Button variant="contained" onClick={() => {}}>
             {t('profile.save-edits')}
           </Button>
         </Box>

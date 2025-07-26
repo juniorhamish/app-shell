@@ -5,7 +5,6 @@ import { configs, plugins } from 'eslint-config-airbnb-extended';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';
 import vitest from '@vitest/eslint-plugin';
 import reactRefresh from 'eslint-plugin-react-refresh';
-import tanStackPluginQuery from '@tanstack/eslint-plugin-query';
 import reactRedux from 'eslint-plugin-react-redux';
 
 export const projectRoot = path.resolve('.');
@@ -100,8 +99,6 @@ export default [
   ...reduxConfig,
   // Testing Config
   ...vitestConfig,
-  // TanStack Query Config
-  ...tanStackPluginQuery.configs['flat/recommended'],
   // Prettier Config (should be last to override conflicting rules)
   eslintConfigPrettier,
 ];
