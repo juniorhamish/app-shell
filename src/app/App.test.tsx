@@ -2,7 +2,7 @@ import { screen, within } from '@testing-library/react';
 import { Auth0ContextInterface, LogoutOptions, RedirectLoginOptions, useAuth0 } from '@auth0/auth0-react';
 import { userEvent } from '@testing-library/user-event';
 import App from './App';
-import render from './test-util/i18NextTestWrapper';
+import renderWithProviders from '../test-util/test-utils';
 
 vi.mock('@auth0/auth0-react');
 
@@ -15,17 +15,17 @@ describe('App', () => {
   });
   describe('header bar', () => {
     it('should have a logo', () => {
-      const { container } = render(<App />);
+      const { container } = renderWithProviders(<App />);
 
       expect(container).toMatchSnapshot();
     });
     it('should have a title', () => {
-      render(<App />);
+      renderWithProviders(<App />);
 
       expect(within(banner()).getByRole('heading')).toHaveTextContent('DAJohnston');
     });
     it('should have a Sign in button when the user is not currently logged in', () => {
-      render(<App />);
+      renderWithProviders(<App />);
 
       expect(within(banner()).getByRole('button', { name: 'Sign in' })).toBeVisible();
       expect(within(banner()).queryByTestId('PersonIcon')).not.toBeInTheDocument();
@@ -33,7 +33,7 @@ describe('App', () => {
     it('should not show the Sign in button when the user is logged in', () => {
       vi.mocked(useAuth0).mockReturnValue({ isAuthenticated: true } as Auth0ContextInterface);
 
-      render(<App />);
+      renderWithProviders(<App />);
 
       expect(within(banner()).queryByRole('button', { name: 'Sign in' })).not.toBeInTheDocument();
     });
@@ -41,7 +41,7 @@ describe('App', () => {
       const user = userEvent.setup();
       const loginWithRedirect: (options?: RedirectLoginOptions) => Promise<void> = vi.fn();
       vi.mocked(useAuth0).mockReturnValue({ isAuthenticated: false, loginWithRedirect } as Auth0ContextInterface);
-      render(<App />);
+      renderWithProviders(<App />);
 
       await user.click(within(banner()).getByRole('button', { name: 'Sign in' }));
 
@@ -50,7 +50,7 @@ describe('App', () => {
     it('should show a spinner while the authentication status is loading', () => {
       vi.mocked(useAuth0).mockReturnValue({ isLoading: true } as Auth0ContextInterface);
 
-      render(<App />);
+      renderWithProviders(<App />);
 
       expect(screen.getByRole('progressbar')).toBeVisible();
     });
@@ -60,7 +60,7 @@ describe('App', () => {
         user: { picture: 'https://me.com/avatar' },
       } as Auth0ContextInterface);
 
-      render(<App />);
+      renderWithProviders(<App />);
 
       expect(
         within(within(banner()).getByRole('button', { name: 'Open settings' })).getByRole('img', {
@@ -74,7 +74,7 @@ describe('App', () => {
         user: { name: 'David Johnston' },
       } as Auth0ContextInterface);
 
-      render(<App />);
+      renderWithProviders(<App />);
 
       expect(within(banner()).getByRole('button', { name: 'Open settings' })).toHaveTextContent('David Johnston');
     });
@@ -87,7 +87,7 @@ describe('App', () => {
       } as Auth0ContextInterface);
       const user = userEvent.setup();
 
-      render(<App />);
+      renderWithProviders(<App />);
 
       await user.click(within(banner()).getByRole('img', { name: 'User avatar' }));
       await user.click(within(userMenu()).getByRole('menuitem', { name: 'Sign out' }));
@@ -98,7 +98,7 @@ describe('App', () => {
       vi.mocked(useAuth0).mockReturnValue({ isAuthenticated: true, user: { picture: 'a' } } as Auth0ContextInterface);
       const user = userEvent.setup();
 
-      render(<App />);
+      renderWithProviders(<App />);
 
       await user.click(within(banner()).getByRole('img', { name: 'User avatar' }));
       await user.keyboard('{Escape}');
@@ -114,7 +114,7 @@ describe('App', () => {
       } as Auth0ContextInterface);
       const user = userEvent.setup();
 
-      render(<App />);
+      renderWithProviders(<App />);
 
       await user.click(within(banner()).getByRole('img', { name: 'User avatar' }));
       await user.click(within(userMenu()).getByRole('menuitem', { name: 'Sign out' }));
@@ -125,7 +125,7 @@ describe('App', () => {
       vi.mocked(useAuth0).mockReturnValue({ isAuthenticated: true, user: { picture: 'a' } } as Auth0ContextInterface);
       const user = userEvent.setup();
 
-      render(<App />);
+      renderWithProviders(<App />);
 
       await user.click(within(banner()).getByRole('img', { name: 'User avatar' }));
       await user.click(within(userMenu()).getByRole('menuitem', { name: 'Profile Settings' }));

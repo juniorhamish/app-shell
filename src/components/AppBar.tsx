@@ -18,14 +18,15 @@ import { useTranslation } from 'react-i18next';
 import ExpandMoreSharpIcon from '@mui/icons-material/ExpandMoreSharp';
 import Logout from '@mui/icons-material/Logout';
 import logo from '../assets/logo-round.png';
-import { useDrawer } from '../context';
+import { toggleDrawer } from '../app/features/drawer/drawerSlice';
+import { useAppDispatch } from '../app/hooks';
 
 export default function AppBar() {
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
   const menuId = useId();
   const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
   const [userSettingsMenuAnchor, setUserSettingsMenuAnchor] = useState<null | HTMLElement>(null);
-  const { toggleDrawer } = useDrawer();
   return (
     <MuiAppBar position="static">
       <Toolbar>
@@ -78,7 +79,7 @@ export default function AppBar() {
                 key="my-profile"
                 onClick={async () => {
                   setUserSettingsMenuAnchor(null);
-                  toggleDrawer();
+                  dispatch(toggleDrawer());
                 }}
               >
                 <Typography sx={{ textAlign: 'center' }}>{t('profile.settings')}</Typography>

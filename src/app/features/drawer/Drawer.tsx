@@ -12,10 +12,13 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDrawer, useUserInfo } from '../context';
+import { useUserInfo } from '../../../context';
+import { isDrawerOpen, toggleDrawer } from './drawerSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 export default function Drawer() {
-  const { drawerOpen, toggleDrawer } = useDrawer();
+  const drawerOpen = useAppSelector(isDrawerOpen);
+  const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const [avatarSource, setAvatarSource] = useState('avatar');
   const { firstName, lastName, gravatarEmailAddress, nickname, picture, updateUserInfo } = useUserInfo();
@@ -32,7 +35,7 @@ export default function Drawer() {
     <MuiDrawer
       anchor="right"
       open={drawerOpen}
-      onClose={toggleDrawer}
+      onClose={() => dispatch(toggleDrawer())}
       slotProps={{ paper: { sx: { width: '384px' } } }}
     >
       <Stack sx={{ padding: '24px', gap: '24px' }}>

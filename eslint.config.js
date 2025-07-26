@@ -6,6 +6,7 @@ import eslintConfigPrettier from 'eslint-config-prettier/flat';
 import vitest from '@vitest/eslint-plugin';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import tanStackPluginQuery from '@tanstack/eslint-plugin-query';
+import reactRedux from 'eslint-plugin-react-redux';
 
 export const projectRoot = path.resolve('.');
 export const gitignorePath = path.resolve(projectRoot, '.gitignore');
@@ -41,6 +42,19 @@ const reactConfig = [
       // React Refresh rules for better HMR
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     },
+  },
+];
+
+const reduxConfig = [
+  {
+    plugins: {
+      'react-redux': reactRedux,
+    },
+    rules: reactRedux.configs.recommended.rules,
+  },
+  {
+    files: ['src/**/*Slice.ts'],
+    rules: { 'no-param-reassign': ['error', { props: false }] },
   },
 ];
 
@@ -82,6 +96,8 @@ export default [
   ...reactConfig,
   // TypeScript Config
   ...typescriptConfig,
+  // Redux config
+  ...reduxConfig,
   // Testing Config
   ...vitestConfig,
   // TanStack Query Config
