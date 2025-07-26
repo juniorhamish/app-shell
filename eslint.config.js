@@ -88,7 +88,7 @@ export default [
   // Ignore .gitignore files/folder in eslint
   includeIgnoreFile(gitignorePath),
   {
-    ignores: ['src/__snapshots__', 'src/client', 'dist/**/*', 'coverage/**/*'],
+    ignores: ['src/app/__snapshots__', 'src/client', 'dist/**/*', 'coverage/**/*'],
   },
   // Javascript Config
   ...jsConfig,
