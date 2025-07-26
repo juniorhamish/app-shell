@@ -18,13 +18,13 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     updateAuthState: (state, action: PayloadAction<AuthState>) => {
-      state.isLoading = action.payload.isLoading;
-      state.isAuthenticated = action.payload.isAuthenticated;
-      state.user = action.payload.user;
+      Object.assign(state, action.payload);
     },
   },
 });
 
 export const { updateAuthState } = authSlice.actions;
 export default authSlice.reducer;
-export const authState = (state: RootState) => state.auth;
+export const selectIsLoading = (state: RootState) => state.auth.isLoading;
+export const selectIsAuthenticated = (state: RootState) => state.auth.isAuthenticated;
+export const selectUser = (state: RootState) => state.auth.user;

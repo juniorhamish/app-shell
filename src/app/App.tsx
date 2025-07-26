@@ -5,12 +5,12 @@ import Drawer from './features/drawer/Drawer';
 import { UserInfoProvider } from '../context';
 import useAuth0Listener from './features/auth/useAuth0Listener';
 import { useAppSelector } from './hooks';
-import { authState } from './features/auth/authSlice';
+import { selectIsLoading } from './features/auth/authSlice';
 
 export default function App() {
   const { t } = useTranslation();
   useAuth0Listener();
-  const { isLoading } = useAppSelector(authState);
+  const isLoading = useAppSelector(selectIsLoading);
   return (
     <UserInfoProvider>
       <Backdrop open={isLoading} aria-hidden={!isLoading} sx={(theme) => ({ zIndex: theme.zIndex.drawer + 1 })}>

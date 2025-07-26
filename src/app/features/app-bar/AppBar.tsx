@@ -20,12 +20,13 @@ import Logout from '@mui/icons-material/Logout';
 import logo from '../../../assets/logo-round.png';
 import { toggleDrawer } from '../drawer/drawerSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { authState } from '../auth/authSlice';
+import { selectIsAuthenticated, selectUser } from '../auth/authSlice';
 
 export default function AppBar() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { user, isAuthenticated } = useAppSelector(authState);
+  const user = useAppSelector(selectUser);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const menuId = useId();
   const { loginWithRedirect, logout } = useAuth0();
   const [userSettingsMenuAnchor, setUserSettingsMenuAnchor] = useState<null | HTMLElement>(null);
