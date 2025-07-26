@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { useAuth0 } from '@auth0/auth0-react';
 import AppBar from './features/app-bar/AppBar';
 import Drawer from './features/drawer/Drawer';
-import { UserInfoProvider } from '../context';
 import useAuth0Listener from './features/auth/useAuth0Listener';
 import { useAppSelector } from './hooks';
 import { selectIsLoading } from './features/auth/authSlice';
@@ -15,7 +14,7 @@ export default function App() {
   useAuth0Listener();
   const isLoading = useAppSelector(selectIsLoading);
   return (
-    <UserInfoProvider>
+    <>
       <Backdrop open={isLoading} aria-hidden={!isLoading} sx={(theme) => ({ zIndex: theme.zIndex.drawer + 1 })}>
         <CircularProgress color="inherit" aria-label={t('authentication-loading')} />
       </Backdrop>
@@ -24,6 +23,6 @@ export default function App() {
         <Box component="main" />
         <Drawer />
       </Container>
-    </UserInfoProvider>
+    </>
   );
 }
