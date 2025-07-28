@@ -33,6 +33,7 @@ const userSlice = createSlice({
     selectNickname: (state) => state.userInfo?.nickname,
     selectPicture: (state) => state.userInfo?.picture,
     selectGravatarEmailAddress: (state) => state.userInfo?.gravatarEmailAddress,
+    selectAvatarSource: (state) => state.userInfo?.avatarImageSource,
   },
   extraReducers(builder) {
     builder
@@ -50,5 +51,12 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-export const { selectUserFirstName, selectUserLastName, selectNickname, selectPicture, selectGravatarEmailAddress } =
-  userSlice.selectors;
+export const {
+  selectUserFirstName,
+  selectUserLastName,
+  selectNickname,
+  selectPicture,
+  selectGravatarEmailAddress,
+  selectAvatarSource,
+  selectUserInfoStatus,
+} = userSlice.selectors;

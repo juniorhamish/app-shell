@@ -3,13 +3,16 @@
   "sign-out": "Sign out",
   "sign-in": "Sign in",
   "authentication-loading": "User authentication loading.",
+  "user-info-loading": "User info loading.",
+  "user-info-failed-to-load": "Failed to load user info.",
   "avatar-alt-text": "User avatar",
   "user-menu": "User menu",
   "profile": {
     "settings": "Profile Settings",
     "heading": "Edit Profile",
     "sub-heading": "Update your profile information below",
-    "name-text-field": "Name",
+    "first-name-text-field": "First Name",
+    "last-name-text-field": "Last Name",
     "nickname-text-field": "Nickname",
     "avatar-option": {
       "avatar": "Avatar",
@@ -19,5 +22,10 @@
     },
     "cancel-edits": "Cancel",
     "save-edits": "Save Changes"
+  },
+  "validation": {
+    "required-field": "Required",
+    "email": "Must be a valid email address",
+    "url": "Must be a valid URL"
   }
 }

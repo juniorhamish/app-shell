@@ -3,13 +3,16 @@
   "sign-out": "Abmelden",
   "sign-in": "Anmelden",
   "authentication-loading": "Benutzerauthentifizierung wird geladen.",
+  "user-info-loading": "Benutzerinformationen wird geladen.",
+  "user-info-failed-to-load": "Benutzerinformationen konnten nicht geladen werden.",
   "avatar-alt-text": "Benutzer Avatar",
   "user-menu": "Benutzermenü",
   "profile": {
     "settings": "Profileinstellungen",
     "heading": "Profil bearbeiten",
     "sub-heading": "Aktualisieren Sie unten Ihre Profilinformationen",
-    "name-text-field": "Name",
+    "first-name-text-field": "Vorname",
+    "last-name-text-field": "Nachname",
     "nickname-text-field": "Nickname",
     "avatar-option": {
       "avatar": "Avatar",
@@ -19,5 +22,10 @@
     },
     "cancel-edits": "Abbrechen",
     "save-edits": "Speichern"
+  },
+  "validation": {
+    "required-field": "Erforderlich",
+    "email": "Muss eine gültige E-Mail-Adresse sein",
+    "url": "Muss eine gültige URL sein"
   }
 }
