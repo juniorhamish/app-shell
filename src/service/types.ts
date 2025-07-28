@@ -3,7 +3,7 @@ export enum AvatarImageSource {
   MANUAL = 'MANUAL',
 }
 
-export interface UserInfo {
+export interface UserInfoResponse {
   firstName: string;
   lastName: string;
   readonly email: string;
@@ -13,9 +13,4 @@ export interface UserInfo {
   avatarImageSource: AvatarImageSource;
 }
 
-export type PatchableUserInfo = Partial<UserInfo>;
-
-export interface Error {
-  code: number;
-  message: string;
-}
+export type UserInfo = UserInfoResponse & { resolvedPicture: string };
