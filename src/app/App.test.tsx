@@ -14,6 +14,7 @@ const userMenu = () => screen.getByRole('menu', { name: 'User menu' });
 describe('App', () => {
   beforeEach(() => {
     vi.mocked(useAuth0).mockReturnValue({} as Auth0ContextInterface);
+    vi.mocked(authenticatedFetch).mockReturnValue(new Promise(() => {}));
   });
   describe('header bar', () => {
     it('should have a logo', () => {
