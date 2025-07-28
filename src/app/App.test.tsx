@@ -3,8 +3,10 @@ import { Auth0ContextInterface, LogoutOptions, RedirectLoginOptions, useAuth0 } 
 import { userEvent } from '@testing-library/user-event';
 import App from './App';
 import renderWithProviders from '../test-util/test-utils';
+import authenticatedFetch from '../service/AuthenticatedFetch';
 
 vi.mock('@auth0/auth0-react');
+vi.mock('../service/AuthenticatedFetch');
 
 const banner = () => screen.getByRole('banner');
 const userMenu = () => screen.getByRole('menu', { name: 'User menu' });
@@ -123,6 +125,7 @@ describe('App', () => {
     });
     it('should open the user settings panel when clicking Profile Settings', async () => {
       vi.mocked(useAuth0).mockReturnValue({ isAuthenticated: true, user: { picture: 'a' } } as Auth0ContextInterface);
+      vi.mocked(authenticatedFetch).mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({}) } as Response);
       const user = userEvent.setup();
 
       renderWithProviders(<App />);

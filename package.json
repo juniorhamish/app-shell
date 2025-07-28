@@ -11,7 +11,7 @@
     "prettier:check": "prettier . --check",
     "prettier:write": "prettier . --write",
     "test": "vitest",
-    "test:ci": "vitest run --coverage",
+    "test:ci": "DEBUG_PRINT_LIMIT=99999 vitest run --coverage",
     "check-dependencies": "depcheck"
   },
   "dependencies": {
