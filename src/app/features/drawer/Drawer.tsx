@@ -13,38 +13,22 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Field, Form, Formik } from 'formik';
 import { RadioGroup, TextField } from 'formik-mui';
-import { md5 } from 'js-md5';
 import { object, string } from 'yup';
 import { useMemo } from 'react';
 import { selectIsDrawerOpen, toggleDrawer } from './drawerSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import {
-  selectAvatarSource,
-  selectGravatarEmailAddress,
-  selectNickname,
-  selectPicture,
-  selectUserFirstName,
-  selectUserInfoStatus,
-  selectUserLastName,
-} from '../user/userSlice';
 import { AvatarImageSource } from '../../../service/types';
-
-const emailAddressToGravatarUrl = (emailAddress: string) => {
-  const hash = md5(emailAddress.trim().toLowerCase());
-  return `https://www.gravatar.com/avatar/${hash}`;
-};
+import { useGetUserInfoQuery, useUpdateUserInfoMutation } from '../../services/user-info';
+import { selectIsAuthenticated } from '../auth/authSlice';
+import emailAddressToGravatarUrl from '../../../util/utils';
 
 export default function Drawer() {
   const dispatch = useAppDispatch();
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const { isLoading, isError, isSuccess, data } = useGetUserInfoQuery(undefined, { skip: !isAuthenticated });
+  const [updateUserInfo] = useUpdateUserInfoMutation();
   const drawerOpen = useAppSelector(selectIsDrawerOpen);
-  const firstName = useAppSelector(selectUserFirstName);
-  const lastName = useAppSelector(selectUserLastName);
-  const nickname = useAppSelector(selectNickname);
-  const picture = useAppSelector(selectPicture);
-  const gravatarEmailAddress = useAppSelector(selectGravatarEmailAddress);
-  const avatarImageSource = useAppSelector(selectAvatarSource);
-  const userInfoStatus = useAppSelector(selectUserInfoStatus);
-  const userInfoLoading = userInfoStatus === 'loading';
+  const { firstName, lastName, nickname, picture, gravatarEmailAddress, avatarImageSource } = data ?? {};
   const { t } = useTranslation();
   const userInfoSchema = useMemo(
     () =>
@@ -71,18 +55,20 @@ export default function Drawer() {
     >
       <Box sx={{ position: 'relative', height: '100%', width: '100%' }}>
         <Backdrop
-          open={userInfoLoading}
-          aria-hidden={!userInfoLoading}
+          open={isLoading}
+          aria-hidden={!isLoading}
           sx={(theme) => ({ zIndex: theme.zIndex.drawer + 1, position: 'absolute' })}
         >
           <CircularProgress color="inherit" aria-label={t('user-info-loading')} />
         </Backdrop>
-        {userInfoStatus === 'failed' && <Box>{t('user-info-failed-to-load')}</Box>}
-        {userInfoStatus === 'successful' && (
+        {isError && <Box>{t('user-info-failed-to-load')}</Box>}
+        {isSuccess && (
           <Formik
+            enableReinitialize
             initialValues={{ firstName, lastName, nickname, gravatarEmailAddress, picture, avatarImageSource }}
             validationSchema={userInfoSchema}
-            onSubmit={(_values, { setSubmitting }) => {
+            onSubmit={async (values, { setSubmitting }) => {
+              await updateUserInfo(values);
               setSubmitting(false);
             }}
           >

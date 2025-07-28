@@ -20,13 +20,15 @@ import Logout from '@mui/icons-material/Logout';
 import logo from '../../../assets/logo-round.png';
 import { toggleDrawer } from '../drawer/drawerSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { selectIsAuthenticated, selectUser } from '../auth/authSlice';
+import { selectIsAuthenticated } from '../auth/authSlice';
+import { useGetUserInfoQuery } from '../../services/user-info';
 
 export default function AppBar() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const user = useAppSelector(selectUser);
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const { data, isSuccess } = useGetUserInfoQuery(undefined, { skip: !isAuthenticated });
+  const { firstName, lastName, resolvedPicture } = data ?? {};
   const menuId = useId();
   const { loginWithRedirect, logout } = useAuth0();
   const [userSettingsMenuAnchor, setUserSettingsMenuAnchor] = useState<null | HTMLElement>(null);
@@ -42,7 +44,7 @@ export default function AppBar() {
             DAJohnston
           </Typography>
         </Box>
-        {isAuthenticated ? (
+        {isSuccess && (
           <>
             <Tooltip title={t('open-settings-tooltip')} enterDelay={500} enterNextDelay={500} leaveDelay={200}>
               <IconButton
@@ -52,8 +54,8 @@ export default function AppBar() {
                 onClick={(event) => setUserSettingsMenuAnchor(event.currentTarget)}
                 sx={{ gap: 1, borderRadius: 0 }}
               >
-                <Avatar alt={t('avatar-alt-text')} src={user?.picture} />
-                <Typography sx={{ display: { xs: 'none', sm: 'block' } }}>{user?.name}</Typography>
+                <Avatar alt={t('avatar-alt-text')} src={resolvedPicture} />
+                <Typography sx={{ display: { xs: 'none', sm: 'block' } }}>{`${firstName} ${lastName}`}</Typography>
                 <ExpandMoreSharpIcon />
               </IconButton>
             </Tooltip>
@@ -102,7 +104,8 @@ export default function AppBar() {
               </MenuItem>
             </Menu>
           </>
-        ) : (
+        )}
+        {!isAuthenticated && (
           <Button onClick={() => loginWithRedirect()} color="inherit">
             {t('sign-in')}
           </Button>
