@@ -132,8 +132,7 @@ describe('App', () => {
       await user.click(await within(banner()).findByRole('img', { name: 'User avatar' }));
       await user.click(within(userMenu()).getByRole('menuitem', { name: 'Profile Settings' }));
 
-      expect(screen.getByText('Edit Profile')).toBeVisible();
-      expect(screen.getByText('Update your profile information below')).toBeVisible();
+      expect(screen.getByRole('dialog', { name: 'Edit Profile' })).toBeVisible();
     });
   });
 });

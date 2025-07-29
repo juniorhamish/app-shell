@@ -1,3 +1,4 @@
+import storybook from 'eslint-plugin-storybook';
 import js from '@eslint/js';
 import path from 'node:path';
 import { includeIgnoreFile } from '@eslint/compat';
@@ -90,11 +91,21 @@ const vitestConfig = [
   },
 ];
 
+const storybookConfig = [
+  ...storybook.configs['flat/recommended'],
+  {
+    files: ['**/*.stories.*', './.storybook/*'],
+    rules: {
+      'import-x/no-extraneous-dependencies': ['error', { devDependencies: true }],
+    },
+  },
+];
+
 export default [
   // Ignore .gitignore files/folder in eslint
   includeIgnoreFile(gitignorePath),
   {
-    ignores: ['src/app/__snapshots__', 'src/client', 'dist/**/*', 'coverage/**/*'],
+    ignores: ['**/__snapshots__', 'src/client', 'dist/**/*', 'coverage/**/*', '!.storybook'],
   },
   // Javascript Config
   ...jsConfig,
@@ -106,6 +117,8 @@ export default [
   ...reduxConfig,
   // Testing Config
   ...vitestConfig,
+  // Storybook Config
+  ...storybookConfig,
   // Prettier Config (should be last to override conflicting rules)
   eslintConfigPrettier,
 ];
