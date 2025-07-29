@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { Field, Form, Formik } from 'formik';
 import { RadioGroup, TextField } from 'formik-mui';
 import { object, string } from 'yup';
-import { useMemo } from 'react';
+import { useId, useMemo } from 'react';
 import { selectIsDrawerOpen, toggleDrawer } from './drawerSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AvatarImageSource } from '../../../service/types';
@@ -23,6 +23,7 @@ import { selectIsAuthenticated } from '../auth/authSlice';
 import emailAddressToGravatarUrl from '../../../util/utils';
 
 export default function Drawer() {
+  const drawerTitleId = useId();
   const dispatch = useAppDispatch();
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const { isLoading, isError, isSuccess, data } = useGetUserInfoQuery(undefined, { skip: !isAuthenticated });
@@ -48,6 +49,9 @@ export default function Drawer() {
   );
   return (
     <MuiDrawer
+      component="aside"
+      role="dialog"
+      aria-labelledby={drawerTitleId}
       anchor="right"
       open={drawerOpen}
       onClose={() => dispatch(toggleDrawer())}
@@ -76,7 +80,7 @@ export default function Drawer() {
               <Form>
                 <Stack sx={{ padding: '24px', gap: '24px' }}>
                   <Stack sx={{ gap: '5px' }}>
-                    <Typography variant="h2" sx={{ fontWeight: 'bold', fontSize: '1.125rem' }}>
+                    <Typography id={drawerTitleId} variant="h2" sx={{ fontWeight: 'bold', fontSize: '1.125rem' }}>
                       {t('profile.heading')}
                     </Typography>
                     <Typography sx={{ fontSize: '0.875rem', fontWeight: '300' }}>{t('profile.sub-heading')}</Typography>
