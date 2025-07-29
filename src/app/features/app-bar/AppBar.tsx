@@ -17,7 +17,6 @@ import { useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ExpandMoreSharpIcon from '@mui/icons-material/ExpandMoreSharp';
 import Logout from '@mui/icons-material/Logout';
-import logo from '../../../assets/logo-round.png';
 import { toggleDrawer } from '../drawer/drawerSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { selectIsAuthenticated } from '../auth/authSlice';
@@ -36,7 +35,7 @@ export default function AppBar() {
     <MuiAppBar position="static">
       <Toolbar>
         <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <Box sx={{ maxWidth: 60, verticalAlign: 'middle' }} component="img" src={logo} alt="" />
+          <Box sx={{ maxWidth: 60, verticalAlign: 'middle' }} />
           <Typography
             variant="h1"
             sx={{ fontWeight: 'medium', fontSize: '1.25rem', display: { xs: 'none', sm: 'block' } }}
