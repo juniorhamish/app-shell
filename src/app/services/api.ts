@@ -8,7 +8,7 @@ const baseQuery = fetchBaseQuery({
       return headers;
     }
     const token = await auth0Instance.getAccessTokenSilently();
-    headers.set('Authorization', `Bearer ${token ?? ''}`);
+    headers.set('Authorization', `Bearer ${token}`);
     return headers;
   },
 });

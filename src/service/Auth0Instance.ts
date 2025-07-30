@@ -4,7 +4,7 @@ type Auth0Client = ReturnType<typeof useAuth0>;
 
 let auth0Instance: Auth0Client | null = null;
 
-export const setAuth0Instance = (instance: Auth0Client) => {
+export const setAuth0Instance = (instance: Auth0Client | null) => {
   auth0Instance = instance;
 };
 
