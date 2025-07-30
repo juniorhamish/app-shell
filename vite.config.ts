@@ -30,7 +30,14 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['json', 'html', 'lcov', 'text'],
       include: ['src/**/*.@(js|jsx|mjs|ts|tsx)'],
-      exclude: ['src/main.tsx', 'src/vite-env.d.ts', 'src/remotes.d.ts', 'src/i18n.ts', 'src/client'],
+      exclude: [
+        'src/main.tsx',
+        'src/vite-env.d.ts',
+        'src/remotes.d.ts',
+        'src/i18n.ts',
+        'src/client',
+        'src/**/*.stories.*',
+      ],
     },
     reporters: ['default', 'junit'],
     outputFile: {
