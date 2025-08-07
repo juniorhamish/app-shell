@@ -3,6 +3,7 @@ Project Development Guidelines
 Scope: This document captures project-specific build, configuration, testing, and development practices for the app-shell repository. It assumes an advanced developer familiar with React, Vite, Vitest, MSW, RTK Query, Redux Toolkit, and Storybook.
 
 1. Build and Configuration
+
 - Toolchain and versions
   - Vite 7 with @vitejs/plugin-react-swc
   - React 19, TypeScript 5.8
@@ -25,15 +26,16 @@ Scope: This document captures project-specific build, configuration, testing, an
   - Test-specific config is embedded in vite.config.ts under test (see Testing section).
 - TypeScript configuration
   - tsconfig.app.json targets ES2024 + DOM and sets types: ["vitest/globals", "@testing-library/jest-dom"].
-  - tsconfig.node.json includes vite.config.ts, vitest-setup.ts, and .storybook/*.
+  - tsconfig.node.json includes vite.config.ts, vitest-setup.ts, and .storybook/\*.
 - Linting/Formatting
   - ESLint: Flat config (eslint.config.js) composed from eslint-config-airbnb-extended, @stylistic, import-x, React, React Hooks, jsx-a11y, vitest, redux plugin, and storybook plugin. Prettier config is applied last for compat.
   - Special rules:
-    - For slice files (files matching src/**/*Slice.ts), no-param-reassign props rule is relaxed.
+    - For slice files (files matching src/\**/*Slice.ts), no-param-reassign props rule is relaxed.
     - Test and storybook files allow devDependencies imports.
   - Prettier 3 is used for formatting. Run prettier:write before committing large changes.
 
 2. Testing
+
 - Test runner and environment
   - Vitest 3.x, environment: jsdom, globals: true (configured in vite.config.ts).
   - setupFiles: vitest-setup.ts runs once per test session.
@@ -64,7 +66,7 @@ Scope: This document captures project-specific build, configuration, testing, an
 - Store and RTK Query
   - The app’s RTK Query api uses retry(baseQuery, { maxRetries: 6 }). When writing tests that intentionally fail a request, consider that retries may affect timing. Use waitFor appropriately or override the handler to respond immediately with the final intended response.
 - File conventions
-  - Tests colocated under src alongside code. Naming: *.test.ts, *.test.tsx (Vitest default discovery applies).
+  - Tests colocated under src alongside code. Naming: _.test.ts, _.test.tsx (Vitest default discovery applies).
 - Running tests
   - Watch mode: npm test
   - CI mode (no watch; coverage + reports): npm run test:ci
@@ -76,6 +78,7 @@ Scope: This document captures project-specific build, configuration, testing, an
   - Removed the temporary test file afterward to keep the repository clean, as required by the task instructions.
 
 3. Additional Development Information
+
 - i18n during tests
   - i18next is initialized once in TranslationsWrapper with debug: true and English resources. If a component uses t('key') not present in public/locales/en/translation.json, you’ll see raw keys or warnings in logs; update translation.json for stable test output.
 - MSW best practices
@@ -95,6 +98,7 @@ Scope: This document captures project-specific build, configuration, testing, an
   - ESLint includes storybook-specific rules; stories are excluded from test coverage.
 
 4. Quickstart Commands
+
 - Install deps: npm ci (or npm i)
 - Start dev server: npm run dev
 - Type-check + build: npm run build
@@ -105,6 +109,7 @@ Scope: This document captures project-specific build, configuration, testing, an
 - Run tests (CI with coverage): npm run test:ci
 
 5. Adding a New Test — Example
+
 - Example test pattern leveraging project utilities and MSW:
 
   // src/some/feature/MyWidget.test.tsx
@@ -115,18 +120,19 @@ Scope: This document captures project-specific build, configuration, testing, an
   import MyWidget from './MyWidget';
 
   describe('MyWidget', () => {
-    it('renders server-provided data', async () => {
-      server.use(
-        http.get('https://user-service.dajohnston.co.uk/api/v1/user-info', () =>
-          HttpResponse.json({ firstName: 'Ada', lastName: 'Lovelace' }),
-        ),
-      );
-      renderWithProviders(<MyWidget />);
-      expect(await screen.findByText('Ada Lovelace')).toBeVisible();
-    });
+  it('renders server-provided data', async () => {
+  server.use(
+  http.get('https://user-service.dajohnston.co.uk/api/v1/user-info', () =>
+  HttpResponse.json({ firstName: 'Ada', lastName: 'Lovelace' }),
+  ),
+  );
+  renderWithProviders(<MyWidget />);
+  expect(await screen.findByText('Ada Lovelace')).toBeVisible();
+  });
   });
 
 Notes
+
 - Do not disable the MSW server in tests; vitest-setup.ts controls lifecycle globally.
 - If a test modifies Auth0 state through setAuth0Instance, you don’t need to clean up — setup resets it after each test.
 - When debugging async behaviors, prefer await screen.findBy..., waitFor, and ViTest’s fake timers if necessary.
