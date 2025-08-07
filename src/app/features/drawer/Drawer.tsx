@@ -27,9 +27,9 @@ export default function Drawer() {
   const dispatch = useAppDispatch();
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const { isLoading, isError, isSuccess, data } = useGetUserInfoQuery(undefined, { skip: !isAuthenticated });
+  const { firstName, lastName, nickname, picture, gravatarEmailAddress, avatarImageSource } = data ?? {};
   const [updateUserInfo] = useUpdateUserInfoMutation();
   const drawerOpen = useAppSelector(selectIsDrawerOpen);
-  const { firstName, lastName, nickname, picture, gravatarEmailAddress, avatarImageSource } = data ?? {};
   const { t } = useTranslation();
   const userInfoSchema = useMemo(
     () =>
