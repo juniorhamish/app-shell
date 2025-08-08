@@ -1,4 +1,4 @@
-import { useAuth0 } from '@auth0/auth0-react';
+import type { useAuth0 } from '@auth0/auth0-react';
 
 type Auth0Client = ReturnType<typeof useAuth0>;
 

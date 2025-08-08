@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import drawerReducer from './features/drawer/drawerSlice';
 import authReducer from './features/auth/authSlice';
+import drawerReducer from './features/drawer/drawerSlice';
 import api from './services/api';
 
 const rootReducer = combineReducers({
@@ -11,9 +11,9 @@ const rootReducer = combineReducers({
 
 export const setupStore = (preloadedState?: Partial<RootState>) =>
   configureStore({
-    reducer: rootReducer,
-    preloadedState,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
+    preloadedState,
+    reducer: rootReducer,
   });
 
 export type RootState = ReturnType<typeof rootReducer>;

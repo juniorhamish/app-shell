@@ -15,8 +15,8 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithRetry = retry(baseQuery, { maxRetries: 6 });
 
 export default createApi({
-  reducerPath: 'appShellService',
   baseQuery: baseQueryWithRetry,
-  tagTypes: ['User'],
   endpoints: () => ({}),
+  reducerPath: 'appShellService',
+  tagTypes: ['User'],
 });

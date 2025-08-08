@@ -1,10 +1,10 @@
+import type { Auth0ContextInterface } from '@auth0/auth0-react';
 import { screen, waitFor } from '@testing-library/react';
-import { Auth0ContextInterface } from '@auth0/auth0-react';
-import { http, HttpResponse } from 'msw';
+import { HttpResponse, http } from 'msw';
+import server from '../../../mocks/server';
+import { setAuth0Instance } from '../../../service/Auth0Instance';
 import renderWithProviders from '../../../test-util/test-utils';
 import Drawer from './Drawer';
-import { setAuth0Instance } from '../../../service/Auth0Instance';
-import server from '../../../mocks/server';
 
 describe('drawer', () => {
   beforeEach(() => {

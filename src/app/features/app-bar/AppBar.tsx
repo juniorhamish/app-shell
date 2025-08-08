@@ -1,5 +1,7 @@
+import { useAuth0 } from '@auth0/auth0-react';
+import ExpandMoreSharpIcon from '@mui/icons-material/ExpandMoreSharp';
+import Logout from '@mui/icons-material/Logout';
 import {
-  AppBar as MuiAppBar,
   Avatar,
   Box,
   Button,
@@ -8,20 +10,18 @@ import {
   ListItemIcon,
   Menu,
   MenuItem,
+  AppBar as MuiAppBar,
   Toolbar,
   Tooltip,
   Typography,
 } from '@mui/material';
-import { useAuth0 } from '@auth0/auth0-react';
 import { useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import ExpandMoreSharpIcon from '@mui/icons-material/ExpandMoreSharp';
-import Logout from '@mui/icons-material/Logout';
 import logo from '../../../assets/logo-round.png';
-import { toggleDrawer } from '../drawer/drawerSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { selectIsAuthenticated } from '../auth/authSlice';
 import { useGetUserInfoQuery } from '../../services/user-info';
+import { selectIsAuthenticated } from '../auth/authSlice';
+import { toggleDrawer } from '../drawer/drawerSlice';
 
 export default function AppBar() {
   const { t } = useTranslation();
@@ -35,31 +35,39 @@ export default function AppBar() {
   return (
     <MuiAppBar position="static">
       <Toolbar>
-        <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <Box sx={{ maxWidth: 60, verticalAlign: 'middle' }} component="img" src={logo} alt="" />
+        <Box sx={{ alignItems: 'center', display: 'flex', flexDirection: 'row', flexGrow: 1 }}>
+          <Box alt="" component="img" src={logo} sx={{ maxWidth: 60, verticalAlign: 'middle' }} />
           <Typography
+            sx={{ display: { sm: 'block', xs: 'none' }, fontSize: '1.25rem', fontWeight: 'medium' }}
             variant="h1"
-            sx={{ fontWeight: 'medium', fontSize: '1.25rem', display: { xs: 'none', sm: 'block' } }}
           >
             DAJohnston
           </Typography>
         </Box>
         {isSuccess && (
           <>
-            <Tooltip title={t('open-settings-tooltip')} enterDelay={500} enterNextDelay={500} leaveDelay={200}>
+            <Tooltip enterDelay={500} enterNextDelay={500} leaveDelay={200} title={t('open-settings-tooltip')}>
               <IconButton
-                aria-haspopup="menu"
                 aria-controls={menuId}
                 aria-expanded={Boolean(userSettingsMenuAnchor)}
+                aria-haspopup="menu"
                 onClick={(event) => setUserSettingsMenuAnchor(event.currentTarget)}
-                sx={{ gap: 1, borderRadius: 0 }}
+                sx={{ borderRadius: 0, gap: 1 }}
               >
                 <Avatar alt={t('avatar-alt-text')} src={resolvedPicture} />
-                <Typography sx={{ display: { xs: 'none', sm: 'block' } }}>{`${firstName} ${lastName}`}</Typography>
+                <Typography sx={{ display: { sm: 'block', xs: 'none' } }}>{`${firstName} ${lastName}`}</Typography>
                 <ExpandMoreSharpIcon />
               </IconButton>
             </Tooltip>
             <Menu
+              anchorEl={userSettingsMenuAnchor}
+              anchorOrigin={{
+                horizontal: 'right',
+                vertical: 'bottom',
+              }}
+              keepMounted
+              onClose={() => setUserSettingsMenuAnchor(null)}
+              open={Boolean(userSettingsMenuAnchor)}
               slotProps={{
                 list: {
                   'aria-label': t('user-menu'),
@@ -67,17 +75,9 @@ export default function AppBar() {
                 },
               }}
               sx={{ mt: '5px', width: '5000px' }}
-              open={Boolean(userSettingsMenuAnchor)}
-              onClose={() => setUserSettingsMenuAnchor(null)}
-              anchorEl={userSettingsMenuAnchor}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              keepMounted
               transformOrigin={{
-                vertical: 'top',
                 horizontal: 'right',
+                vertical: 'top',
               }}
             >
               <MenuItem
@@ -106,7 +106,7 @@ export default function AppBar() {
           </>
         )}
         {!isAuthenticated && (
-          <Button onClick={() => loginWithRedirect()} color="inherit">
+          <Button color="inherit" onClick={() => loginWithRedirect()}>
             {t('sign-in')}
           </Button>
         )}

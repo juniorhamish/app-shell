@@ -1,19 +1,8 @@
 {
-  "open-settings-tooltip": "Einstellungen öffnen",
-  "sign-out": "Abmelden",
-  "sign-in": "Anmelden",
   "authentication-loading": "Benutzerauthentifizierung wird geladen.",
-  "user-info-loading": "Benutzerinformationen wird geladen.",
-  "user-info-failed-to-load": "Benutzerinformationen konnten nicht geladen werden.",
   "avatar-alt-text": "Benutzer Avatar",
-  "user-menu": "Benutzermenü",
+  "open-settings-tooltip": "Einstellungen öffnen",
   "profile": {
-    "settings": "Profileinstellungen",
-    "heading": "Profil bearbeiten",
-    "sub-heading": "Aktualisieren Sie unten Ihre Profilinformationen",
-    "first-name-text-field": "Vorname",
-    "last-name-text-field": "Nachname",
-    "nickname-text-field": "Nickname",
     "avatar-option": {
       "avatar": "Avatar",
       "avatar-url": "Avatar URL",
@@ -21,11 +10,22 @@
       "gravatar-email-address": "Gravatar Email Addresse"
     },
     "cancel-edits": "Abbrechen",
-    "save-edits": "Speichern"
+    "first-name-text-field": "Vorname",
+    "heading": "Profil bearbeiten",
+    "last-name-text-field": "Nachname",
+    "nickname-text-field": "Nickname",
+    "save-edits": "Speichern",
+    "settings": "Profileinstellungen",
+    "sub-heading": "Aktualisieren Sie unten Ihre Profilinformationen"
   },
+  "sign-in": "Anmelden",
+  "sign-out": "Abmelden",
+  "user-info-failed-to-load": "Benutzerinformationen konnten nicht geladen werden.",
+  "user-info-loading": "Benutzerinformationen wird geladen.",
+  "user-menu": "Benutzermenü",
   "validation": {
-    "required-field": "Erforderlich",
     "email": "Muss eine gültige E-Mail-Adresse sein",
+    "required-field": "Erforderlich",
     "url": "Muss eine gültige URL sein"
   }
 }
