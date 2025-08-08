@@ -4,23 +4,23 @@ import {
   Box,
   Button,
   CircularProgress,
-  Drawer as MuiDrawer,
   FormControlLabel,
+  Drawer as MuiDrawer,
   Radio,
   Stack,
   Typography,
 } from '@mui/material';
-import { useTranslation } from 'react-i18next';
 import { Field, Form, Formik } from 'formik';
 import { RadioGroup, TextField } from 'formik-mui';
-import { object, string } from 'yup';
 import { useId, useMemo } from 'react';
-import { selectIsDrawerOpen, toggleDrawer } from './drawerSlice';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useTranslation } from 'react-i18next';
+import { object, string } from 'yup';
 import { AvatarImageSource } from '../../../service/types';
+import emailAddressToGravatarUrl from '../../../util/utils';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useGetUserInfoQuery, useUpdateUserInfoMutation } from '../../services/user-info';
 import { selectIsAuthenticated } from '../auth/authSlice';
-import emailAddressToGravatarUrl from '../../../util/utils';
+import { selectIsDrawerOpen, toggleDrawer } from './drawerSlice';
 
 export default function Drawer() {
   const drawerTitleId = useId();
@@ -34,53 +34,71 @@ export default function Drawer() {
   const userInfoSchema = useMemo(
     () =>
       object({
+        avatarImageSource: string().required(),
         firstName: string().required(),
-        lastName: string().required(),
-        nickname: string().required(),
         gravatarEmailAddress: string()
           .email()
-          .when('avatarImageSource', { is: AvatarImageSource.GRAVATAR, then: (schema) => schema.required() }),
+          .when('avatarImageSource', {
+            is: AvatarImageSource.GRAVATAR,
+            // biome-ignore lint/suspicious/noThenProperty: This is a yup validation
+            then: (schema) => schema.required(),
+          }),
+        lastName: string().required(),
+        nickname: string().required(),
         picture: string()
           .url()
-          .when('avatarImageSource', { is: AvatarImageSource.MANUAL, then: (schema) => schema.required() }),
-        avatarImageSource: string().required(),
+          .when('avatarImageSource', {
+            is: AvatarImageSource.MANUAL,
+            // biome-ignore lint/suspicious/noThenProperty: This is a yup validation
+            then: (schema) => schema.required(),
+          }),
       }),
     [],
   );
   return (
     <MuiDrawer
-      component="aside"
-      role="dialog"
-      aria-labelledby={drawerTitleId}
       anchor="right"
-      open={drawerOpen}
+      aria-labelledby={drawerTitleId}
+      component="aside"
       onClose={() => dispatch(toggleDrawer())}
+      open={drawerOpen}
+      role="dialog"
       slotProps={{ paper: { sx: { width: '384px' } } }}
     >
-      <Box sx={{ position: 'relative', height: '100%', width: '100%' }}>
+      <Box sx={{ height: '100%', position: 'relative', width: '100%' }}>
         <Backdrop
-          open={isLoading}
           aria-hidden={!isLoading}
-          sx={(theme) => ({ zIndex: theme.zIndex.drawer + 1, position: 'absolute' })}
+          open={isLoading}
+          sx={(theme) => ({
+            position: 'absolute',
+            zIndex: theme.zIndex.drawer + 1,
+          })}
         >
-          <CircularProgress color="inherit" aria-label={t('user-info-loading')} />
+          <CircularProgress aria-label={t('user-info-loading')} color="inherit" />
         </Backdrop>
         {isError && <Box>{t('user-info-failed-to-load')}</Box>}
         {isSuccess && (
           <Formik
             enableReinitialize
-            initialValues={{ firstName, lastName, nickname, gravatarEmailAddress, picture, avatarImageSource }}
-            validationSchema={userInfoSchema}
+            initialValues={{
+              avatarImageSource,
+              firstName,
+              gravatarEmailAddress,
+              lastName,
+              nickname,
+              picture,
+            }}
             onSubmit={async (values, { setSubmitting }) => {
               await updateUserInfo(values);
               setSubmitting(false);
             }}
+            validationSchema={userInfoSchema}
           >
             {({ submitForm, isSubmitting, values, isValid, dirty, handleReset }) => (
               <Form>
-                <Stack sx={{ padding: '24px', gap: '24px' }}>
+                <Stack sx={{ gap: '24px', padding: '24px' }}>
                   <Stack sx={{ gap: '5px' }}>
-                    <Typography id={drawerTitleId} variant="h2" sx={{ fontWeight: 'bold', fontSize: '1.125rem' }}>
+                    <Typography id={drawerTitleId} sx={{ fontSize: '1.125rem', fontWeight: 'bold' }} variant="h2">
                       {t('profile.heading')}
                     </Typography>
                     <Typography sx={{ fontSize: '0.875rem', fontWeight: '300' }}>{t('profile.sub-heading')}</Typography>
@@ -92,63 +110,69 @@ export default function Drawer() {
                           ? emailAddressToGravatarUrl(values.gravatarEmailAddress ?? '')
                           : values.picture
                       }
-                      sx={{ width: '64px', height: '64px' }}
+                      sx={{ height: '64px', width: '64px' }}
                     />
                   </Box>
                   <Field
                     component={TextField}
-                    name="firstName"
                     label={t('profile.first-name-text-field')}
+                    name="firstName"
                     variant="outlined"
                   />
                   <Field
                     component={TextField}
-                    name="lastName"
                     label={t('profile.last-name-text-field')}
+                    name="lastName"
                     variant="outlined"
                   />
                   <Field
                     component={TextField}
-                    name="nickname"
                     label={t('profile.nickname-text-field')}
+                    name="nickname"
                     variant="outlined"
                   />
                   <Field component={RadioGroup} name="avatarImageSource">
                     <FormControlLabel
-                      value={AvatarImageSource.MANUAL}
                       control={<Radio disabled={isSubmitting} />}
-                      label={t('profile.avatar-option.avatar')}
                       disabled={isSubmitting}
+                      label={t('profile.avatar-option.avatar')}
+                      value={AvatarImageSource.MANUAL}
                     />
                     <FormControlLabel
-                      value={AvatarImageSource.GRAVATAR}
                       control={<Radio disabled={isSubmitting} />}
-                      label={t('profile.avatar-option.gravatar')}
                       disabled={isSubmitting}
+                      label={t('profile.avatar-option.gravatar')}
+                      value={AvatarImageSource.GRAVATAR}
                     />
                   </Field>
                   {values.avatarImageSource === AvatarImageSource.MANUAL && (
                     <Field
                       component={TextField}
-                      name="picture"
                       label={t('profile.avatar-option.avatar-url')}
+                      name="picture"
                       variant="outlined"
                     />
                   )}
                   {values.avatarImageSource === AvatarImageSource.GRAVATAR && (
                     <Field
                       component={TextField}
+                      label={t('profile.avatar-option.gravatar-email-address')}
                       name="gravatarEmailAddress"
                       type="email"
-                      label={t('profile.avatar-option.gravatar-email-address')}
                       variant="outlined"
                     />
                   )}
-                  <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: '16px' }}>
-                    <Button variant="outlined" onClick={handleReset} disabled={isSubmitting || !dirty}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      gap: '16px',
+                      justifyContent: 'flex-end',
+                    }}
+                  >
+                    <Button disabled={isSubmitting || !dirty} onClick={handleReset} variant="outlined">
                       {t('profile.cancel-edits')}
                     </Button>
-                    <Button variant="contained" onClick={submitForm} disabled={!isValid || isSubmitting || !dirty}>
+                    <Button disabled={!isValid || isSubmitting || !dirty} onClick={submitForm} variant="contained">
                       {t('profile.save-edits')}
                     </Button>
                   </Box>

@@ -1,19 +1,8 @@
 {
-  "open-settings-tooltip": "Open settings",
-  "sign-out": "Sign out",
-  "sign-in": "Sign in",
   "authentication-loading": "User authentication loading.",
-  "user-info-loading": "User info loading.",
-  "user-info-failed-to-load": "Failed to load user info.",
   "avatar-alt-text": "User avatar",
-  "user-menu": "User menu",
+  "open-settings-tooltip": "Open settings",
   "profile": {
-    "settings": "Profile Settings",
-    "heading": "Edit Profile",
-    "sub-heading": "Update your profile information below",
-    "first-name-text-field": "First Name",
-    "last-name-text-field": "Last Name",
-    "nickname-text-field": "Nickname",
     "avatar-option": {
       "avatar": "Avatar",
       "avatar-url": "Avatar URL",
@@ -21,11 +10,22 @@
       "gravatar-email-address": "Gravatar Email Address"
     },
     "cancel-edits": "Cancel",
-    "save-edits": "Save Changes"
+    "first-name-text-field": "First Name",
+    "heading": "Edit Profile",
+    "last-name-text-field": "Last Name",
+    "nickname-text-field": "Nickname",
+    "save-edits": "Save Changes",
+    "settings": "Profile Settings",
+    "sub-heading": "Update your profile information below"
   },
+  "sign-in": "Sign in",
+  "sign-out": "Sign out",
+  "user-info-failed-to-load": "Failed to load user info.",
+  "user-info-loading": "User info loading.",
+  "user-menu": "User menu",
   "validation": {
-    "required-field": "Required",
     "email": "Must be a valid email address",
+    "required-field": "Required",
     "url": "Must be a valid URL"
   }
 }

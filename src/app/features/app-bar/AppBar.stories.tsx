@@ -1,7 +1,7 @@
-import { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Provider } from 'react-redux';
-import AppBar from './AppBar';
 import { setupStore } from '../../store';
+import AppBar from './AppBar';
 
 const meta = {
   component: AppBar,

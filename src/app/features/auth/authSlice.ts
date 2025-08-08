@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../../store';
 
 export interface AuthState {
@@ -7,13 +7,13 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-  isLoading: false,
   isAuthenticated: false,
+  isLoading: false,
 };
 
 export const authSlice = createSlice({
-  name: 'auth',
   initialState,
+  name: 'auth',
   reducers: {
     updateAuthState: (state, action: PayloadAction<AuthState>) => {
       Object.assign(state, action.payload);

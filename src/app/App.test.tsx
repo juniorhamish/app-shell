@@ -1,7 +1,8 @@
+import { type Auth0ContextInterface, useAuth0 } from '@auth0/auth0-react';
 import { screen } from '@testing-library/react';
-import { Auth0ContextInterface, useAuth0 } from '@auth0/auth0-react';
-import App from './App';
+import { vi } from 'vitest';
 import renderWithProviders from '../test-util/test-utils';
+import App from './App';
 
 vi.mock('@auth0/auth0-react');
 

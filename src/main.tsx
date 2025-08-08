@@ -1,7 +1,7 @@
+import { Auth0Provider } from '@auth0/auth0-react';
+import { CssBaseline, createTheme, ThemeProvider } from '@mui/material';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Auth0Provider } from '@auth0/auth0-react';
-import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { Provider } from 'react-redux';
 import App from './app/App';
 import '@fontsource/roboto/300.css';
@@ -17,20 +17,22 @@ const theme = createTheme({
   },
 });
 
-createRoot(document.getElementById('root')!).render(
+const rootElement = document.getElementById('root');
+if (!rootElement) throw new Error('Root element not found');
+createRoot(rootElement).render(
   <StrictMode>
     <Provider store={setupStore()}>
       <Auth0Provider
-        domain="dajohnston.eu.auth0.com"
-        clientId="IgckwgORISVWwBUI7BQSD2AtIlL2onsX"
         authorizationParams={{
-          redirect_uri: window.location.origin,
-          scope: 'openid profile offline_access',
-          responseType: 'token id_token',
           audience: 'https://user-service.dajohnston.co.uk',
+          redirect_uri: window.location.origin,
+          responseType: 'token id_token',
+          scope: 'openid profile offline_access',
         }}
-        useRefreshTokens
         cacheLocation="localstorage"
+        clientId="IgckwgORISVWwBUI7BQSD2AtIlL2onsX"
+        domain="dajohnston.eu.auth0.com"
+        useRefreshTokens
       >
         <ThemeProvider theme={theme}>
           <CssBaseline />

@@ -1,11 +1,12 @@
+import { type Auth0ContextInterface, useAuth0 } from '@auth0/auth0-react';
 import { screen, within } from '@testing-library/react';
-import { Auth0ContextInterface, useAuth0 } from '@auth0/auth0-react';
 import { userEvent } from '@testing-library/user-event';
-import { http, HttpResponse } from 'msw';
-import renderWithProviders from '../../../test-util/test-utils';
-import App from '../../App';
+import { HttpResponse, http } from 'msw';
+import { vi } from 'vitest';
 import server from '../../../mocks/server';
 import { AvatarImageSource } from '../../../service/types';
+import renderWithProviders from '../../../test-util/test-utils';
+import App from '../../App';
 
 vi.mock('@auth0/auth0-react');
 
