@@ -13,7 +13,7 @@ await i18n
       backend: {
         loadPath: '/locales/{{lng}}/{{ns}}.json',
       },
-      debug: true,
+      debug: false,
       detection: {
         order: ['querystring', 'navigator', 'localStorage'],
       },
