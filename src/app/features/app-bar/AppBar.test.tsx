@@ -1,6 +1,5 @@
 import { type Auth0ContextInterface, useAuth0 } from '@auth0/auth0-react';
 import { screen, within } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
 import { HttpResponse, http } from 'msw';
 import { vi } from 'vitest';
 import server from '../../../mocks/server';
@@ -42,10 +41,9 @@ describe('App Bar', () => {
     expect(within(banner()).queryByRole('button', { name: 'Sign in' })).not.toBeInTheDocument();
   });
   it('should invoke the loginWithRedirect function when the sign in button is clicked', async () => {
-    const user = userEvent.setup();
     const loginWithRedirect: Auth0ContextInterface['loginWithRedirect'] = vi.fn();
     vi.mocked(useAuth0).mockReturnValue({ isAuthenticated: false, loginWithRedirect } as Auth0ContextInterface);
-    renderWithProviders(<App />);
+    const { user } = renderWithProviders(<App />);
 
     await user.click(signInButton());
 
@@ -99,9 +97,8 @@ describe('App Bar', () => {
   });
   it('should close the menu when pressing escape', async () => {
     vi.mocked(useAuth0).mockReturnValue({ isAuthenticated: true } as Auth0ContextInterface);
-    const user = userEvent.setup();
 
-    renderWithProviders(<App />);
+    const { user } = renderWithProviders(<App />);
 
     await user.click(await userAvatar());
     await user.keyboard('{Escape}');
@@ -111,9 +108,8 @@ describe('App Bar', () => {
   it('should close the menu when clicking Sign out', async () => {
     const logout: Auth0ContextInterface['logout'] = vi.fn();
     vi.mocked(useAuth0).mockReturnValue({ isAuthenticated: true, logout } as Auth0ContextInterface);
-    const user = userEvent.setup();
 
-    renderWithProviders(<App />);
+    const { user } = renderWithProviders(<App />);
 
     await user.click(await userAvatar());
     await user.click(within(userMenu()).getByRole('menuitem', { name: 'Sign out' }));
@@ -123,15 +119,25 @@ describe('App Bar', () => {
   });
   it('should open the user settings panel when clicking Profile Settings', async () => {
     vi.mocked(useAuth0).mockReturnValue({ isAuthenticated: true } as Auth0ContextInterface);
-    const user = userEvent.setup();
 
-    renderWithProviders(<App />);
+    const { user } = renderWithProviders(<App />);
 
     await user.click(await userAvatar());
     await user.click(within(userMenu()).getByRole('menuitem', { name: 'Profile Settings' }));
 
     expect(screen.getByRole('dialog', { name: 'Edit Profile' })).toBeVisible();
     expect(screen.queryByRole('menu', { name: 'User menu' })).not.toBeInTheDocument();
+  });
+  it('should close the user settings panel when clicking away from the Profile Settings dialog', async () => {
+    vi.mocked(useAuth0).mockReturnValue({ isAuthenticated: true } as Auth0ContextInterface);
+
+    const { user } = renderWithProviders(<App />);
+
+    await user.click(await userAvatar());
+    await user.click(within(userMenu()).getByRole('menuitem', { name: 'Profile Settings' }));
+    await user.keyboard('{Escape}');
+
+    expect(screen.queryByRole('dialog', { name: 'Edit Profile' })).not.toBeInTheDocument();
   });
   it('should not show the user menu if the user info request has not yet succeeded', () => {
     vi.mocked(useAuth0).mockReturnValue({ isAuthenticated: true } as Auth0ContextInterface);
@@ -143,9 +149,8 @@ describe('App Bar', () => {
   });
   it('should show a tooltip when hovering over the user menu', async () => {
     vi.mocked(useAuth0).mockReturnValue({ isAuthenticated: true, isLoading: false } as Auth0ContextInterface);
-    const user = userEvent.setup();
 
-    renderWithProviders(<App />);
+    const { user } = renderWithProviders(<App />);
 
     await user.hover(await openSettingsButton());
 

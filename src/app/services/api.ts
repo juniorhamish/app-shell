@@ -12,7 +12,11 @@ const baseQuery = fetchBaseQuery({
     return headers;
   },
 });
-const baseQueryWithRetry = retry(baseQuery, { maxRetries: 6 });
+const baseQueryWithRetry = retry(baseQuery, {
+  maxRetries: Number.isFinite(Number(import.meta.env.RTK_MAX_RETRIES))
+    ? Number(import.meta.env.RTK_MAX_RETRIES)
+    : undefined,
+});
 
 export default createApi({
   baseQuery: baseQueryWithRetry,
