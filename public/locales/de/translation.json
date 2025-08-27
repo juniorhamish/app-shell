@@ -5,18 +5,22 @@
   "profile": {
     "avatar-option": {
       "avatar": "Avatar",
+      "avatar-radio-group": "Avatar-Typ",
       "avatar-url": "Avatar URL",
       "gravatar": "Gravatar",
       "gravatar-email-address": "Gravatar Email Addresse"
     },
     "cancel-edits": "Abbrechen",
     "first-name-text-field": "Vorname",
+    "form-label": "Benutzerprofil-Formular",
     "heading": "Profil bearbeiten",
     "last-name-text-field": "Nachname",
     "nickname-text-field": "Nickname",
     "save-edits": "Speichern",
     "settings": "Profileinstellungen",
-    "sub-heading": "Aktualisieren Sie unten Ihre Profilinformationen"
+    "sub-heading": "Aktualisieren Sie unten Ihre Profilinformationen",
+    "update-error-message": "Profil konnte nicht aktualisiert werden.",
+    "update-success-message": "Profil erfolgreich aktualisiert"
   },
   "sign-in": "Anmelden",
   "sign-out": "Abmelden",

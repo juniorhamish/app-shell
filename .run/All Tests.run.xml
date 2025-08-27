@@ -3,7 +3,9 @@
     <node-interpreter value="project" />
     <vitest-package value="$PROJECT_DIR$/node_modules/vitest" />
     <working-dir value="$PROJECT_DIR$" />
-    <envs />
+    <envs>
+      <env name="DEBUG_PRINT_LIMIT" value="99999" />
+    </envs>
     <scope-kind value="ALL" />
     <method v="2" />
   </configuration>
