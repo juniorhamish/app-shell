@@ -71,6 +71,23 @@ describe('drawer', () => {
 
     await waitFor(() => expect(capturedHeaders?.get('Authorization')).toBe('Bearer MyToken'));
   });
+  it('should set the auth header on the user info request using the popup for token when silent fails', async () => {
+    setAuth0Instance({
+      getAccessTokenSilently: () => Promise.reject(),
+      getAccessTokenWithPopup: () => Promise.resolve('Popup Token'),
+    } as Auth0ContextInterface);
+    let capturedHeaders: Headers | null = null;
+    server.use(
+      http.get('https://user-service.dajohnston.co.uk/api/v1/user-info', ({ request }) => {
+        capturedHeaders = request.headers;
+        return HttpResponse.json({ success: true });
+      }),
+    );
+
+    renderWithProviders(<Drawer />, authenticatedWithDrawerOpenState);
+
+    await waitFor(() => expect(capturedHeaders?.get('Authorization')).toBe('Bearer Popup Token'));
+  });
   it('should show a spinner while the user info is loading', () => {
     server.use(
       http.get('https://user-service.dajohnston.co.uk/api/v1/user-info', async () => {
