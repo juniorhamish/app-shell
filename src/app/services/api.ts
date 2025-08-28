@@ -7,7 +7,12 @@ const baseQuery = fetchBaseQuery({
     if (!auth0Instance.getAccessTokenSilently) {
       return headers;
     }
-    const token = await auth0Instance.getAccessTokenSilently();
+    let token: string | undefined;
+    try {
+      token = await auth0Instance.getAccessTokenSilently();
+    } catch (_error) {
+      token = await auth0Instance.getAccessTokenWithPopup();
+    }
     headers.set('Authorization', `Bearer ${token}`);
     return headers;
   },
