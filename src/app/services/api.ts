@@ -27,5 +27,7 @@ export default createApi({
   baseQuery: baseQueryWithRetry,
   endpoints: () => ({}),
   reducerPath: 'appShellService',
+  refetchOnFocus: true,
+  refetchOnReconnect: true,
   tagTypes: ['User'],
 });
