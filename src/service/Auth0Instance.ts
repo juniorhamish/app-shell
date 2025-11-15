@@ -8,9 +8,4 @@ export const setAuth0Instance = (instance: Auth0Client | null) => {
   auth0Instance = instance;
 };
 
-export const getAuth0Instance = (): Auth0Client => {
-  if (!auth0Instance) {
-    throw new Error('Auth0 instance not initialized');
-  }
-  return auth0Instance;
-};
+export const getAuth0Instance = () => auth0Instance;

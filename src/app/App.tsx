@@ -7,6 +7,7 @@ import { selectIsLoading } from './features/auth/authSlice';
 import useAuth0Listener from './features/auth/useAuth0Listener';
 import Drawer from './features/drawer/Drawer';
 import { useAppSelector } from './hooks';
+import SpiceTrackerRemote from './remotes/SpiceTrackerRemote.tsx';
 
 export default function App() {
   const { t } = useTranslation();
@@ -20,7 +21,9 @@ export default function App() {
       </Backdrop>
       <Container aria-busy={isLoading} disableGutters maxWidth={false}>
         <AppBar />
-        <Box component="main" />
+        <Box component="main">
+          <SpiceTrackerRemote />
+        </Box>
         <Drawer />
       </Container>
     </>

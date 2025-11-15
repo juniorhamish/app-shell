@@ -4,7 +4,7 @@ import { getAuth0Instance } from '../../service/Auth0Instance';
 const baseQuery = fetchBaseQuery({
   prepareHeaders: async (headers) => {
     const auth0Instance = getAuth0Instance();
-    if (!auth0Instance.getAccessTokenSilently) {
+    if (!auth0Instance?.getAccessTokenSilently) {
       return headers;
     }
     let token: string | undefined;
