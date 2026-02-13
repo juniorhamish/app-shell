@@ -1,4 +1,5 @@
-import { Box, MenuItem, Select, type SelectChangeEvent, Typography } from '@mui/material';
+import { House as HouseIcon } from '@mui/icons-material';
+import { Box, MenuItem, Select, type SelectChangeEvent } from '@mui/material';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -30,14 +31,9 @@ export default function HouseholdSelector() {
 
   return (
     <Box sx={{ alignItems: 'center', display: 'flex', ml: 2, mr: 2 }}>
-      <Typography
-        id="household-select-label"
-        sx={{ color: 'rgba(255, 255, 255, 0.7)', display: { sm: 'block', xs: 'none' }, fontSize: '0.75rem', mr: 1 }}
-      >
-        {t('household.label')}
-      </Typography>
+      <HouseIcon sx={{ color: 'rgba(255, 255, 255, 0.7)', mr: 1 }} />
       <Select
-        labelId="household-select-label"
+        inputProps={{ 'aria-label': t('household.label') }}
         onChange={handleChange}
         size="small"
         sx={{

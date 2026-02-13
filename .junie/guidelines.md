@@ -96,6 +96,9 @@ Scope: This document captures project-specific build, configuration, testing, an
   - Storybook build: npm run build-storybook
   - Chromatic publish: npm run chromatic
   - ESLint includes storybook-specific rules; stories are excluded from test coverage.
+- Dependency best practices
+  - Use latest versions of all dependencies.
+  - Avoid using deprecated parameters in all library usages.
 
 4. Quickstart Commands
 
