@@ -1,6 +1,6 @@
 import { House as HouseIcon } from '@mui/icons-material';
 import { Box, MenuItem, Select, type SelectChangeEvent } from '@mui/material';
-import { useEffect } from 'react';
+import { useEffect, useId } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useGetHouseholdsQuery } from '../../services/households';
@@ -8,6 +8,7 @@ import { selectHousehold, selectSelectedHouseholdId } from './householdSlice';
 
 export default function HouseholdSelector() {
   const { t } = useTranslation();
+  const id = useId();
   const dispatch = useAppDispatch();
   const selectedHouseholdId = useAppSelector(selectSelectedHouseholdId);
   const { data: households, isSuccess } = useGetHouseholdsQuery();
@@ -33,7 +34,9 @@ export default function HouseholdSelector() {
     <Box sx={{ alignItems: 'center', display: 'flex', ml: 2, mr: 2 }}>
       <HouseIcon sx={{ color: 'rgba(255, 255, 255, 0.7)', mr: 1 }} />
       <Select
+        id={id}
         inputProps={{ 'aria-label': t('household.label') }}
+        name="household"
         onChange={handleChange}
         size="small"
         sx={{
