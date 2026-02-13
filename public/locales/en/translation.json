@@ -1,6 +1,9 @@
 {
   "authentication-loading": "User authentication loading.",
   "avatar-alt-text": "User avatar",
+  "household": {
+    "label": "Household"
+  },
   "open-settings-tooltip": "Open settings",
   "profile": {
     "avatar-option": {

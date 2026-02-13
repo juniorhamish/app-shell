@@ -3,6 +3,7 @@ import federation from '@originjs/vite-plugin-federation';
 import react from '@vitejs/plugin-react-swc';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig } from 'vite';
+import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -15,6 +16,7 @@ export default defineConfig({
     visualizer({
       filename: './reports/stats.html',
     }),
+    ViteImageOptimizer(),
     federation({
       name: 'app_shell',
       remotes: {

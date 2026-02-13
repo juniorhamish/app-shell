@@ -2,11 +2,13 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import authReducer from './features/auth/authSlice';
 import drawerReducer from './features/drawer/drawerSlice';
+import householdReducer from './features/household/householdSlice';
 import api from './services/api';
 
 const rootReducer = combineReducers({
   auth: authReducer,
   drawer: drawerReducer,
+  household: householdReducer,
   [api.reducerPath]: api.reducer,
 });
 

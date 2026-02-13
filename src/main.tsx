@@ -25,9 +25,9 @@ createRoot(rootElement).render(
       <Auth0Provider
         authorizationParams={{
           audience: 'https://user-service.dajohnston.co.uk',
-          redirect_uri: window.location.origin,
+          redirect_uri: globalThis.location.origin,
           responseType: 'token id_token',
-          scope: 'openid profile offline_access',
+          scope: 'openid profile offline_access email',
         }}
         cacheLocation="localstorage"
         clientId="IgckwgORISVWwBUI7BQSD2AtIlL2onsX"
