@@ -3,6 +3,11 @@ export enum AvatarImageSource {
   MANUAL = 'MANUAL',
 }
 
+export interface Household {
+  id: number;
+  name: string;
+}
+
 export interface UserInfoResponse {
   firstName: string;
   lastName: string;

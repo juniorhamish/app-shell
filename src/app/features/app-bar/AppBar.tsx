@@ -22,6 +22,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useGetUserInfoQuery } from '../../services/user-info';
 import { selectIsAuthenticated } from '../auth/authSlice';
 import { toggleDrawer } from '../drawer/drawerSlice';
+import HouseholdSelector from '../household/HouseholdSelector';
 
 export default function AppBar() {
   const { t } = useTranslation();
@@ -44,6 +45,7 @@ export default function AppBar() {
             DAJohnston
           </Typography>
         </Box>
+        {isAuthenticated && <HouseholdSelector />}
         {isSuccess && (
           <>
             <Tooltip enterDelay={500} enterNextDelay={500} leaveDelay={200} title={t('open-settings-tooltip')}>
@@ -94,7 +96,7 @@ export default function AppBar() {
                 key="sign-out"
                 onClick={async () => {
                   setUserSettingsMenuAnchor(null);
-                  await logout({ logoutParams: { returnTo: window.location.origin } });
+                  await logout({ logoutParams: { returnTo: globalThis.location.origin } });
                 }}
               >
                 <ListItemIcon>

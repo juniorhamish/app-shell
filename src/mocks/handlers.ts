@@ -20,4 +20,10 @@ export default [
     }),
   ),
   http.patch('https://user-service.dajohnston.co.uk/api/v1/user-info', async () => HttpResponse.json({})),
+  http.get('https://user-service.dajohnston.co.uk/api/v1/households', () =>
+    HttpResponse.json([
+      { id: '1', name: 'Household 1' },
+      { id: '2', name: 'Household 2' },
+    ]),
+  ),
 ];
