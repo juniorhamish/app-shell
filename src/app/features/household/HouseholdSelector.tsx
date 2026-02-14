@@ -1,9 +1,22 @@
-import { House as HouseIcon } from '@mui/icons-material';
-import { Box, MenuItem, Select, type SelectChangeEvent } from '@mui/material';
-import { useEffect, useId } from 'react';
+import { Add as AddIcon, House as HouseIcon } from '@mui/icons-material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  MenuItem,
+  Select,
+  type SelectChangeEvent,
+  TextField,
+} from '@mui/material';
+import { type SubmitEvent, useEffect, useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { useGetHouseholdsQuery } from '../../services/households';
+import { useCreateHouseholdMutation, useGetHouseholdsQuery } from '../../services/households';
 import { selectHousehold, selectSelectedHouseholdId } from './householdSlice';
 
 export default function HouseholdSelector() {
@@ -11,23 +24,96 @@ export default function HouseholdSelector() {
   const id = useId();
   const dispatch = useAppDispatch();
   const selectedHouseholdId = useAppSelector(selectSelectedHouseholdId);
-  const { data: households, isSuccess } = useGetHouseholdsQuery();
+  const { data: households, isSuccess, isFetching } = useGetHouseholdsQuery();
+  const [createHousehold, { isLoading: isCreating }] = useCreateHouseholdMutation();
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [newHouseholdName, setNewHouseholdName] = useState('');
+  const [invitations, setInvitations] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [invitationsError, setInvitationsError] = useState('');
 
   useEffect(() => {
-    if (isSuccess && households && households.length > 0) {
+    if (isSuccess && households && households.length > 0 && !isFetching) {
       const isValid = households.some((h) => h.id === selectedHouseholdId);
       if (!isValid) {
         dispatch(selectHousehold(households[0].id));
       }
     }
-  }, [isSuccess, households, selectedHouseholdId, dispatch]);
+  }, [isSuccess, households, selectedHouseholdId, dispatch, isFetching]);
 
-  if (!isSuccess || !households || households.length === 0) {
+  if (!isSuccess || !households) {
     return null;
   }
 
+  const handleOpenDialog = () => {
+    setIsDialogOpen(true);
+    setNewHouseholdName('');
+    setInvitations('');
+    setNameError('');
+    setInvitationsError('');
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
+
   const handleChange = (event: SelectChangeEvent) => {
+    if (event.target.value === 'new') {
+      handleOpenDialog();
+      return;
+    }
     dispatch(selectHousehold(Number(event.target.value)));
+  };
+
+  const validateEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setNameError('');
+    setInvitationsError('');
+
+    let hasError = false;
+
+    if (!newHouseholdName) {
+      setNameError(t('validation.required-field'));
+      hasError = true;
+    } else if (newHouseholdName.length > 20) {
+      setNameError(t('validation.max-length', { count: 20 }));
+      hasError = true;
+    }
+
+    const emailList = invitations
+      .split(',')
+      .map((e) => e.trim())
+      .filter((e) => e !== '');
+    const invalidEmails = emailList.filter((e) => !validateEmail(e));
+
+    if (invalidEmails.length > 0) {
+      setInvitationsError(t('validation.email'));
+      hasError = true;
+    }
+
+    if (hasError) {
+      return;
+    }
+
+    try {
+      const result = await createHousehold({
+        invitations: emailList.length > 0 ? emailList : undefined,
+        name: newHouseholdName,
+      }).unwrap();
+      dispatch(selectHousehold(result.id));
+      handleCloseDialog();
+    } catch (error) {
+      if (error && typeof error === 'object' && 'status' in error && error.status === 409) {
+        setNameError(t('household.create.error.conflict'));
+      } else {
+        setNameError(t('household.create.error.generic'));
+      }
+    }
   };
 
   return (
@@ -54,11 +140,54 @@ export default function HouseholdSelector() {
         value={String(selectedHouseholdId ?? '')}
       >
         {households.map((household) => (
-          <MenuItem key={household.id} value={household.id}>
+          <MenuItem key={household.id} value={String(household.id)}>
             {household.name}
           </MenuItem>
         ))}
+        {households.length > 0 && <Divider />}
+        <MenuItem value="new">
+          <AddIcon sx={{ mr: 1 }} />
+          {t('household.create.button')}
+        </MenuItem>
       </Select>
+
+      <Dialog fullWidth maxWidth="xs" onClose={handleCloseDialog} open={isDialogOpen}>
+        <form onSubmit={handleSubmit}>
+          <DialogTitle>{t('household.create.dialog-title')}</DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              error={!!nameError}
+              fullWidth
+              helperText={nameError}
+              label={t('household.create.name-label')}
+              margin="dense"
+              onChange={(e) => setNewHouseholdName(e.target.value)}
+              required
+              slotProps={{ htmlInput: { maxLength: 20 } }}
+              value={newHouseholdName}
+              variant="outlined"
+            />
+            <TextField
+              error={!!invitationsError}
+              fullWidth
+              helperText={invitationsError}
+              label={t('household.create.invitations-label')}
+              margin="dense"
+              onChange={(e) => setInvitations(e.target.value)}
+              placeholder="email1@example.com, email2@example.com"
+              value={invitations}
+              variant="outlined"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog}>{t('household.create.cancel')}</Button>
+            <Button disabled={isCreating} type="submit" variant="contained">
+              {isCreating ? <CircularProgress size={24} /> : t('household.create.submit')}
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
     </Box>
   );
 }

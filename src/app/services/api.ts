@@ -17,10 +17,14 @@ const baseQuery = fetchBaseQuery({
     return headers;
   },
 });
+
+const maxRetries = Number.isFinite(Number(import.meta.env.RTK_MAX_RETRIES))
+  ? Number(import.meta.env.RTK_MAX_RETRIES)
+  : undefined;
 const baseQueryWithRetry = retry(baseQuery, {
-  maxRetries: Number.isFinite(Number(import.meta.env.RTK_MAX_RETRIES))
-    ? Number(import.meta.env.RTK_MAX_RETRIES)
-    : undefined,
+  retryCondition: (error, _args, { attempt }) =>
+    // @ts-expect-error
+    error.status !== 409 && (maxRetries === undefined ? true : attempt < maxRetries),
 });
 
 export default createApi({
@@ -29,5 +33,5 @@ export default createApi({
   reducerPath: 'appShellService',
   refetchOnFocus: true,
   refetchOnReconnect: true,
-  tagTypes: ['User'],
+  tagTypes: ['User', 'Households'],
 });
