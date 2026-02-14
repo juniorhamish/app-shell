@@ -18,6 +18,13 @@ export const householdsApi = api.injectEndpoints({
         url: householdsServiceURL,
       }),
     }),
+    deleteHousehold: build.mutation<void, number>({
+      invalidatesTags: ['Households'],
+      query: (id) => ({
+        method: 'DELETE',
+        url: `${householdsServiceURL}/${id}`,
+      }),
+    }),
     getHouseholds: build.query<Household[], void>({
       providesTags: ['Households'],
       query: () => householdsServiceURL,
@@ -25,4 +32,4 @@ export const householdsApi = api.injectEndpoints({
   }),
 });
 
-export const { useGetHouseholdsQuery, useCreateHouseholdMutation } = householdsApi;
+export const { useGetHouseholdsQuery, useCreateHouseholdMutation, useDeleteHouseholdMutation } = householdsApi;
