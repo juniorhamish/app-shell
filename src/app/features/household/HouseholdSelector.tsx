@@ -159,7 +159,10 @@ export default function HouseholdSelector() {
           '&:hover': {
             backgroundColor: 'rgba(255, 255, 255, 0.2)',
           },
-          '&:hover .MuiOutlinedInput-notchedOutline': { border: 0 },
+          '&.Mui-focused': {
+            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+            boxShadow: '0 0 0 2px white',
+          },
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': { border: 0 },
           backgroundColor: 'rgba(255, 255, 255, 0.1)',
           borderRadius: 1,
