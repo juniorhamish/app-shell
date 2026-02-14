@@ -123,22 +123,6 @@ export default function HouseholdSelector() {
       <Select
         id={id}
         inputProps={{ 'aria-label': t('household.label') }}
-        name="household"
-        onChange={handleChange}
-        size="small"
-        sx={{
-          '.MuiOutlinedInput-notchedOutline': { border: 0 },
-          '.MuiSelect-icon': { color: 'white' },
-          '&.Mui-focused .MuiOutlinedInput-notchedOutline': { border: 0 },
-          '&:hover': {
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-          },
-          '&:hover .MuiOutlinedInput-notchedOutline': { border: 0 },
-          backgroundColor: 'rgba(255, 255, 255, 0.1)',
-          borderRadius: 1,
-          color: 'white',
-        }}
-        value={String(selectedHouseholdId ?? '')}
         MenuProps={{
           PaperProps: {
             sx: {
@@ -146,6 +130,22 @@ export default function HouseholdSelector() {
             },
           },
         }}
+        name="household"
+        onChange={handleChange}
+        size="small"
+        sx={{
+          '.MuiOutlinedInput-notchedOutline': { border: 0 },
+          '.MuiSelect-icon': { color: 'white' },
+          '&:hover': {
+            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+          },
+          '&:hover .MuiOutlinedInput-notchedOutline': { border: 0 },
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': { border: 0 },
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+          borderRadius: 1,
+          color: 'white',
+        }}
+        value={String(selectedHouseholdId ?? '')}
       >
         {sortedHouseholds.map((household) => (
           <MenuItem key={household.id} value={String(household.id)}>
@@ -154,15 +154,15 @@ export default function HouseholdSelector() {
         ))}
         <MenuItem
           sx={{
+            '&:hover': {
+              backgroundColor: 'action.hover',
+            },
             backgroundColor: 'background.paper',
             borderColor: 'divider',
             borderTop: households.length > 0 ? '1px solid' : 'none',
             bottom: 0,
             position: 'sticky',
             zIndex: 1,
-            '&:hover': {
-              backgroundColor: 'action.hover',
-            },
           }}
           value="new"
         >
