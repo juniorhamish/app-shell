@@ -1,4 +1,4 @@
-import { Add as AddIcon, House as HouseIcon } from '@mui/icons-material';
+import { Add as AddIcon, Delete as DeleteIcon, House as HouseIcon } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -7,15 +7,20 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  IconButton,
   MenuItem,
   Select,
   type SelectChangeEvent,
   TextField,
 } from '@mui/material';
-import { type SubmitEvent, useEffect, useId, useState } from 'react';
+import { type MouseEvent, type SubmitEvent, useEffect, useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { useCreateHouseholdMutation, useGetHouseholdsQuery } from '../../services/households';
+import {
+  useCreateHouseholdMutation,
+  useDeleteHouseholdMutation,
+  useGetHouseholdsQuery,
+} from '../../services/households';
 import { selectHousehold, selectSelectedHouseholdId } from './householdSlice';
 
 export default function HouseholdSelector() {
@@ -25,6 +30,7 @@ export default function HouseholdSelector() {
   const selectedHouseholdId = useAppSelector(selectSelectedHouseholdId);
   const { data: households, isSuccess, isFetching } = useGetHouseholdsQuery();
   const [createHousehold, { isLoading: isCreating }] = useCreateHouseholdMutation();
+  const [deleteHousehold] = useDeleteHouseholdMutation();
 
   const sortedHouseholds = households ? [...households].sort((a, b) => a.name.localeCompare(b.name)) : [];
 
@@ -117,6 +123,11 @@ export default function HouseholdSelector() {
     }
   };
 
+  const handleDelete = async (event: MouseEvent, householdId: number) => {
+    event.stopPropagation();
+    await deleteHousehold(householdId);
+  };
+
   return (
     <Box sx={{ alignItems: 'center', display: 'flex', ml: 2, mr: 2 }}>
       <HouseIcon sx={{ color: 'rgba(255, 255, 255, 0.7)', mr: 1 }} />
@@ -132,6 +143,10 @@ export default function HouseholdSelector() {
         }}
         name="household"
         onChange={handleChange}
+        renderValue={(selected) => {
+          const household = sortedHouseholds.find((h) => String(h.id) === selected);
+          return household ? household.name : '';
+        }}
         size="small"
         sx={{
           '.MuiOutlinedInput-notchedOutline': { border: 0 },
@@ -148,8 +163,30 @@ export default function HouseholdSelector() {
         value={String(selectedHouseholdId ?? '')}
       >
         {sortedHouseholds.map((household) => (
-          <MenuItem key={household.id} value={String(household.id)}>
+          <MenuItem
+            key={household.id}
+            sx={{
+              '& .delete-button': {
+                display: 'none',
+              },
+              '&:hover .delete-button': {
+                display: 'inline-flex',
+              },
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+            value={String(household.id)}
+          >
             {household.name}
+            <IconButton
+              aria-label={t('household.delete')}
+              className="delete-button"
+              onClick={(e) => handleDelete(e, household.id)}
+              size="small"
+              sx={{ ml: 1 }}
+            >
+              <DeleteIcon fontSize="small" />
+            </IconButton>
           </MenuItem>
         ))}
         <MenuItem

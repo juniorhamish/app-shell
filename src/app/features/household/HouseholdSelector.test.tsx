@@ -175,4 +175,29 @@ describe('HouseholdSelector', () => {
     // The "New Household" option is always at the end
     expect(options).toEqual(['Apple', 'Mango', 'Zebra', 'New Household']);
   });
+
+  it('deletes a household and updates selection', async () => {
+    server.use(
+      http.delete('https://user-service.dajohnston.co.uk/api/v1/households/:id', () => {
+        return new HttpResponse(null, { status: 204 });
+      }),
+      // Mock GET to return only the second household after deletion
+      http.get('https://user-service.dajohnston.co.uk/api/v1/households', () => HttpResponse.json([households[1]]), {
+        once: true,
+      }),
+    );
+
+    const { user } = renderWithProviders(<HouseholdSelector />);
+
+    const select = await screen.findByRole('combobox');
+    await user.click(select);
+
+    const deleteButton = screen.getByLabelText(/Delete household/i);
+    await user.click(deleteButton);
+
+    // After clicking delete, the menu might still be open or transitioning.
+    // The select component's display should update.
+    expect(await screen.findByText('Household 2', { selector: '.MuiSelect-select' })).toBeVisible();
+    expect(localStorage.getItem('selectedHouseholdId')).toBe('2');
+  });
 });
