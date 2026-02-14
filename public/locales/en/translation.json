@@ -2,6 +2,18 @@
   "authentication-loading": "User authentication loading.",
   "avatar-alt-text": "User avatar",
   "household": {
+    "create": {
+      "button": "New Household",
+      "cancel": "Cancel",
+      "dialog-title": "Create New Household",
+      "error": {
+        "conflict": "A household with this name already exists",
+        "generic": "Failed to create household"
+      },
+      "invitations-label": "Invitations (comma-separated emails)",
+      "name-label": "Household Name",
+      "submit": "Create"
+    },
     "label": "Household"
   },
   "open-settings-tooltip": "Open settings",
@@ -32,6 +44,7 @@
   "user-menu": "User menu",
   "validation": {
     "email": "Must be a valid email address",
+    "max-length": "Must be at most {{count}} characters",
     "required-field": "Required",
     "url": "Must be a valid URL"
   }
