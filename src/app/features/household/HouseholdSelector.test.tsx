@@ -200,4 +200,43 @@ describe('HouseholdSelector', () => {
     expect(await screen.findByText('Household 2', { selector: '.MuiSelect-select' })).toBeVisible();
     expect(localStorage.getItem('selectedHouseholdId')).toBe('2');
   });
+
+  it('shows delete icon on keyboard focus and allows keyboard deletion', async () => {
+    server.use(
+      http.delete('https://user-service.dajohnston.co.uk/api/v1/households/:id', () => {
+        return new HttpResponse(null, { status: 204 });
+      }),
+      http.get('https://user-service.dajohnston.co.uk/api/v1/households', () => HttpResponse.json([households[1]]), {
+        once: true,
+      }),
+    );
+
+    const { user } = renderWithProviders(<HouseholdSelector />);
+
+    const select = await screen.findByRole('combobox');
+    await user.click(select);
+    await screen.findByRole('listbox');
+
+    // Focus the first household item explicitly if needed, or use arrows
+    // In MUI, opening the menu usually focuses the selected item.
+    // Let's ensure we are on a household item.
+    const options = screen.getAllByRole('option');
+    options[0].focus();
+
+    // Switch to the delete button using ArrowRight
+    await user.keyboard('{ArrowRight}');
+
+    const deleteButton = screen.getAllByLabelText(/Delete household/i)[0];
+    expect(deleteButton).toHaveFocus();
+
+    // Switch back to the household item using ArrowLeft
+    await user.keyboard('{ArrowLeft}');
+    expect(options[0]).toHaveFocus();
+
+    // Switch back to the delete button and delete
+    await user.keyboard('{ArrowRight}');
+    await user.keyboard('{Enter}');
+
+    expect(await screen.findByText('Household 2', { selector: '.MuiSelect-select' })).toBeVisible();
+  });
 });

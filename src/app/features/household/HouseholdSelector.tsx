@@ -135,14 +135,14 @@ export default function HouseholdSelector() {
         id={id}
         inputProps={{ 'aria-label': t('household.label') }}
         MenuProps={{
-          PaperProps: {
-            sx: {
-              maxHeight: 300,
-            },
-          },
           MenuListProps: {
             sx: {
               pb: 0,
+            },
+          },
+          PaperProps: {
+            sx: {
+              maxHeight: 300,
             },
           },
         }}
@@ -170,13 +170,21 @@ export default function HouseholdSelector() {
         {sortedHouseholds.map((household) => (
           <MenuItem
             key={household.id}
+            onKeyDown={(e) => {
+              if (e.key === 'ArrowRight') {
+                const deleteButton = e.currentTarget.querySelector('.delete-button') as HTMLElement;
+                deleteButton?.focus();
+                e.preventDefault();
+              }
+            }}
             sx={{
               '& .delete-button': {
                 display: 'none',
               },
-              '&:hover .delete-button': {
-                display: 'inline-flex',
-              },
+              '&:hover .delete-button, &.Mui-focused .delete-button, &.Mui-focusVisible .delete-button, &:focus-within .delete-button':
+                {
+                  display: 'inline-flex',
+                },
               display: 'flex',
               justifyContent: 'space-between',
             }}
@@ -187,6 +195,13 @@ export default function HouseholdSelector() {
               aria-label={t('household.delete')}
               className="delete-button"
               onClick={(e) => handleDelete(e, household.id)}
+              onKeyDown={(e) => {
+                if (e.key === 'ArrowLeft') {
+                  (e.currentTarget.closest('[role="option"]') as HTMLElement)?.focus();
+                  e.preventDefault();
+                  e.stopPropagation();
+                }
+              }}
               size="small"
               sx={{ ml: 1 }}
             >
