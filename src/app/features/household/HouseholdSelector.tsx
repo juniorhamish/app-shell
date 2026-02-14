@@ -7,7 +7,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Divider,
   MenuItem,
   Select,
   type SelectChangeEvent,
@@ -128,24 +127,43 @@ export default function HouseholdSelector() {
         sx={{
           '.MuiOutlinedInput-notchedOutline': { border: 0 },
           '.MuiSelect-icon': { color: 'white' },
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': { border: 0 },
           '&:hover': {
             backgroundColor: 'rgba(255, 255, 255, 0.2)',
           },
           '&:hover .MuiOutlinedInput-notchedOutline': { border: 0 },
-          '&.Mui-focused .MuiOutlinedInput-notchedOutline': { border: 0 },
           backgroundColor: 'rgba(255, 255, 255, 0.1)',
           borderRadius: 1,
           color: 'white',
         }}
         value={String(selectedHouseholdId ?? '')}
+        MenuProps={{
+          PaperProps: {
+            sx: {
+              maxHeight: 300,
+            },
+          },
+        }}
       >
         {households.map((household) => (
           <MenuItem key={household.id} value={String(household.id)}>
             {household.name}
           </MenuItem>
         ))}
-        {households.length > 0 && <Divider />}
-        <MenuItem value="new">
+        <MenuItem
+          sx={{
+            backgroundColor: 'background.paper',
+            borderColor: 'divider',
+            borderTop: households.length > 0 ? '1px solid' : 'none',
+            bottom: 0,
+            position: 'sticky',
+            zIndex: 1,
+            '&:hover': {
+              backgroundColor: 'action.hover',
+            },
+          }}
+          value="new"
+        >
           <AddIcon sx={{ mr: 1 }} />
           {t('household.create.button')}
         </MenuItem>
