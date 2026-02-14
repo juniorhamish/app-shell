@@ -26,6 +26,8 @@ export default function HouseholdSelector() {
   const { data: households, isSuccess, isFetching } = useGetHouseholdsQuery();
   const [createHousehold, { isLoading: isCreating }] = useCreateHouseholdMutation();
 
+  const sortedHouseholds = households ? [...households].sort((a, b) => a.name.localeCompare(b.name)) : [];
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newHouseholdName, setNewHouseholdName] = useState('');
   const [invitations, setInvitations] = useState('');
@@ -33,13 +35,13 @@ export default function HouseholdSelector() {
   const [invitationsError, setInvitationsError] = useState('');
 
   useEffect(() => {
-    if (isSuccess && households && households.length > 0 && !isFetching) {
-      const isValid = households.some((h) => h.id === selectedHouseholdId);
+    if (isSuccess && sortedHouseholds && sortedHouseholds.length > 0 && !isFetching) {
+      const isValid = sortedHouseholds.some((h) => h.id === selectedHouseholdId);
       if (!isValid) {
-        dispatch(selectHousehold(households[0].id));
+        dispatch(selectHousehold(sortedHouseholds[0].id));
       }
     }
-  }, [isSuccess, households, selectedHouseholdId, dispatch, isFetching]);
+  }, [isSuccess, sortedHouseholds, selectedHouseholdId, dispatch, isFetching]);
 
   if (!isSuccess || !households) {
     return null;
@@ -145,7 +147,7 @@ export default function HouseholdSelector() {
           },
         }}
       >
-        {households.map((household) => (
+        {sortedHouseholds.map((household) => (
           <MenuItem key={household.id} value={String(household.id)}>
             {household.name}
           </MenuItem>

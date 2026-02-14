@@ -155,4 +155,24 @@ describe('HouseholdSelector', () => {
 
     expect(await screen.findByText('Loading Household')).toBeVisible();
   });
+
+  it('renders households in alphabetical order', async () => {
+    const unsortedHouseholds = [
+      { id: 2, name: 'Zebra' },
+      { id: 1, name: 'Apple' },
+      { id: 3, name: 'Mango' },
+    ];
+    server.use(
+      http.get('https://user-service.dajohnston.co.uk/api/v1/households', () => HttpResponse.json(unsortedHouseholds)),
+    );
+
+    const { user } = renderWithProviders(<HouseholdSelector />);
+
+    const select = await screen.findByRole('combobox');
+    await user.click(select);
+
+    const options = screen.getAllByRole('option').map((option) => option.textContent);
+    // The "New Household" option is always at the end
+    expect(options).toEqual(['Apple', 'Mango', 'Zebra', 'New Household']);
+  });
 });
