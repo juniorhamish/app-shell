@@ -140,6 +140,11 @@ export default function HouseholdSelector() {
               maxHeight: 300,
             },
           },
+          MenuListProps: {
+            sx: {
+              pb: 0,
+            },
+          },
         }}
         name="household"
         onChange={handleChange}
