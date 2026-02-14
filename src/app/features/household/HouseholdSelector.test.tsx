@@ -150,6 +150,8 @@ describe('HouseholdSelector', () => {
     await user.click(screen.getByRole('button', { name: 'Create' }));
 
     expect(screen.getByRole('progressbar')).toBeVisible();
+    expect(screen.getByLabelText(/Household Name/i)).toBeDisabled();
+    expect(screen.getByLabelText(/Invitations/i)).toBeDisabled();
 
     expect(await screen.findByText('Loading Household')).toBeVisible();
   });

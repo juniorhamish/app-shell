@@ -175,6 +175,7 @@ export default function HouseholdSelector() {
           <DialogContent>
             <TextField
               autoFocus
+              disabled={isCreating}
               error={!!nameError}
               fullWidth
               helperText={nameError}
@@ -187,6 +188,7 @@ export default function HouseholdSelector() {
               variant="outlined"
             />
             <TextField
+              disabled={isCreating}
               error={!!invitationsError}
               fullWidth
               helperText={invitationsError}
