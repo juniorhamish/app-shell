@@ -1,5 +1,8 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import { Backdrop, Box, CircularProgress, Container } from '@mui/material';
+import Backdrop from '@mui/material/Backdrop';
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+import Container from '@mui/material/Container';
 import { useTranslation } from 'react-i18next';
 import { setAuth0Instance } from '../service/Auth0Instance';
 import AppBar from './features/app-bar/AppBar';

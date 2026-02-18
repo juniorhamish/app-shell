@@ -1,33 +1,29 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import {
-  Add as AddIcon,
-  Check as CheckIcon,
-  Close as CloseIcon,
-  Delete as DeleteIcon,
-  Email as EmailIcon,
-  House as HouseIcon,
-} from '@mui/icons-material';
-import {
-  Badge,
-  Box,
-  Button,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  Menu,
-  MenuItem,
-  Select,
-  type SelectChangeEvent,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EmailIcon from '@mui/icons-material/Email';
+import HouseIcon from '@mui/icons-material/House';
+import type { SelectChangeEvent } from '@mui/material';
+import Badge from '@mui/material/Badge';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import { type MouseEvent, type SubmitEvent, useEffect, useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../hooks';

@@ -1,20 +1,18 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import ExpandMoreSharpIcon from '@mui/icons-material/ExpandMoreSharp';
 import Logout from '@mui/icons-material/Logout';
-import {
-  Avatar,
-  Box,
-  Button,
-  Divider,
-  IconButton,
-  ListItemIcon,
-  Menu,
-  MenuItem,
-  AppBar as MuiAppBar,
-  Toolbar,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import MuiAppBar from '@mui/material/AppBar';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import { useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import logo from '../../../assets/logo-round.png';
