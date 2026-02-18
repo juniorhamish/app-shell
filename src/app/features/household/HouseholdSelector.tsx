@@ -1,5 +1,13 @@
-import { Add as AddIcon, Delete as DeleteIcon, House as HouseIcon } from '@mui/icons-material';
 import {
+  Add as AddIcon,
+  Check as CheckIcon,
+  Close as CloseIcon,
+  Delete as DeleteIcon,
+  Email as EmailIcon,
+  House as HouseIcon,
+} from '@mui/icons-material';
+import {
+  Badge,
   Box,
   Button,
   CircularProgress,
@@ -8,10 +16,16 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Menu,
   MenuItem,
   Select,
   type SelectChangeEvent,
+  Stack,
   TextField,
+  Typography,
 } from '@mui/material';
 import { type MouseEvent, type SubmitEvent, useEffect, useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,6 +35,11 @@ import {
   useDeleteHouseholdMutation,
   useGetHouseholdsQuery,
 } from '../../services/households';
+import {
+  useAcceptInvitationMutation,
+  useGetInvitationsQuery,
+  useRejectInvitationMutation,
+} from '../../services/invitations';
 import { selectHousehold, selectSelectedHouseholdId } from './householdSlice';
 
 export default function HouseholdSelector() {
@@ -31,32 +50,42 @@ export default function HouseholdSelector() {
   const { data: households, isSuccess, isFetching } = useGetHouseholdsQuery();
   const [createHousehold, { isLoading: isCreating }] = useCreateHouseholdMutation();
   const [deleteHousehold] = useDeleteHouseholdMutation();
+  const { data: invitations } = useGetInvitationsQuery();
+  const [acceptInvitation, { isLoading: isAccepting, originalArgs: acceptingArgs }] = useAcceptInvitationMutation();
+  const [rejectInvitation, { isLoading: isRejecting, originalArgs: rejectingArgs }] = useRejectInvitationMutation();
+
+  const isInvitationProcessing = isAccepting || isRejecting;
 
   const sortedHouseholds = households ? [...households].sort((a, b) => a.name.localeCompare(b.name)) : [];
+  const sortedInvitations = invitations
+    ? [...invitations].sort((a, b) => new Date(b.invited_at).getTime() - new Date(a.invited_at).getTime())
+    : [];
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [invitationsAnchorEl, setInvitationsAnchorEl] = useState<null | HTMLElement>(null);
   const [newHouseholdName, setNewHouseholdName] = useState('');
-  const [invitations, setInvitations] = useState('');
+  const [invitationEmails, setInvitationEmails] = useState('');
   const [nameError, setNameError] = useState('');
   const [invitationsError, setInvitationsError] = useState('');
 
   useEffect(() => {
     if (isSuccess && sortedHouseholds && sortedHouseholds.length > 0 && !isFetching) {
       const isValid = sortedHouseholds.some((h) => h.id === selectedHouseholdId);
-      if (!isValid) {
-        dispatch(selectHousehold(sortedHouseholds[0].id));
+      if (selectedHouseholdId === null || (!isValid && !isFetching)) {
+        // Only automatically select a household if none is selected.
+        // If the selected household becomes invalid (e.g. deleted),
+        // we should handle that in the delete handler by setting it to null.
+        if (selectedHouseholdId === null) {
+          dispatch(selectHousehold(sortedHouseholds[0].id));
+        }
       }
     }
   }, [isSuccess, sortedHouseholds, selectedHouseholdId, dispatch, isFetching]);
 
-  if (!isSuccess || !households) {
-    return null;
-  }
-
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
     setNewHouseholdName('');
-    setInvitations('');
+    setInvitationEmails('');
     setNameError('');
     setInvitationsError('');
   };
@@ -92,7 +121,7 @@ export default function HouseholdSelector() {
       hasError = true;
     }
 
-    const emailList = invitations
+    const emailList = invitationEmails
       .split(',')
       .map((e) => e.trim())
       .filter((e) => e !== '');
@@ -126,110 +155,196 @@ export default function HouseholdSelector() {
   const handleDelete = async (event: MouseEvent, householdId: number) => {
     event.stopPropagation();
     await deleteHousehold(householdId);
+    if (householdId === selectedHouseholdId) {
+      dispatch(selectHousehold(null));
+    }
+  };
+
+  const handleInvitationsClick = (event: MouseEvent<HTMLElement>) => {
+    setInvitationsAnchorEl(event.currentTarget);
+  };
+
+  const handleInvitationsClose = () => {
+    setInvitationsAnchorEl(null);
+  };
+
+  const handleAccept = async (invitationId: number) => {
+    const newHousehold = await acceptInvitation(invitationId).unwrap();
+    dispatch(selectHousehold(newHousehold.id));
+    handleInvitationsClose();
+  };
+
+  const handleReject = async (invitationId: number) => {
+    await rejectInvitation(invitationId).unwrap();
+    if (sortedInvitations.length === 1) {
+      handleInvitationsClose();
+    }
   };
 
   return (
     <Box sx={{ alignItems: 'center', display: 'flex', ml: 2, mr: 2 }}>
-      <HouseIcon sx={{ color: 'rgba(255, 255, 255, 0.7)', mr: 1 }} />
-      <Select
-        id={id}
-        inputProps={{ 'aria-label': t('household.label') }}
-        MenuProps={{
-          MenuListProps: {
-            sx: {
-              pb: 0,
-            },
-          },
-          PaperProps: {
-            sx: {
-              maxHeight: 300,
-            },
-          },
-        }}
-        name="household"
-        onChange={handleChange}
-        renderValue={(selected) => {
-          const household = sortedHouseholds.find((h) => String(h.id) === selected);
-          return household ? household.name : '';
-        }}
-        size="small"
-        sx={{
-          '.MuiOutlinedInput-notchedOutline': { border: 0 },
-          '.MuiSelect-icon': { color: 'white' },
-          '&:hover': {
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-          },
-          '&.Mui-focused': {
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-            boxShadow: '0 0 0 2px white',
-          },
-          '&.Mui-focused .MuiOutlinedInput-notchedOutline': { border: 0 },
-          backgroundColor: 'rgba(255, 255, 255, 0.1)',
-          borderRadius: 1,
-          color: 'white',
-        }}
-        value={String(selectedHouseholdId ?? '')}
-      >
-        {sortedHouseholds.map((household) => (
-          <MenuItem
-            key={household.id}
-            onKeyDown={(e) => {
-              if (e.key === 'ArrowRight') {
-                const deleteButton = e.currentTarget.querySelector('.delete-button') as HTMLElement;
-                deleteButton?.focus();
-                e.preventDefault();
-              }
-            }}
-            sx={{
-              '& .delete-button': {
-                display: 'none',
-              },
-              '&:hover .delete-button, &.Mui-focused .delete-button, &.Mui-focusVisible .delete-button, &:focus-within .delete-button':
-                {
-                  display: 'inline-flex',
+      {isSuccess && households && (
+        <>
+          <HouseIcon sx={{ color: 'rgba(255, 255, 255, 0.7)', mr: 1 }} />
+          <Select
+            id={id}
+            inputProps={{ 'aria-label': t('household.label') }}
+            MenuProps={{
+              MenuListProps: {
+                sx: {
+                  pb: 0,
                 },
-              display: 'flex',
-              justifyContent: 'space-between',
+              },
+              PaperProps: {
+                sx: {
+                  maxHeight: 300,
+                },
+              },
             }}
-            value={String(household.id)}
+            name="household"
+            onChange={handleChange}
+            renderValue={(selected) => {
+              const household = sortedHouseholds.find((h) => String(h.id) === selected);
+              return household ? household.name : '';
+            }}
+            size="small"
+            sx={{
+              '.MuiOutlinedInput-notchedOutline': { border: 0 },
+              '.MuiSelect-icon': { color: 'white' },
+              '&:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+              },
+              '&.Mui-focused': {
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                boxShadow: '0 0 0 2px white',
+              },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': { border: 0 },
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              borderRadius: 1,
+              color: 'white',
+            }}
+            value={String(selectedHouseholdId ?? '')}
           >
-            {household.name}
-            <IconButton
-              aria-label={t('household.delete')}
-              className="delete-button"
-              onClick={(e) => handleDelete(e, household.id)}
-              onKeyDown={(e) => {
-                if (e.key === 'ArrowLeft') {
-                  (e.currentTarget.closest('[role="option"]') as HTMLElement)?.focus();
-                  e.preventDefault();
-                  e.stopPropagation();
-                }
+            {sortedHouseholds.map((household) => (
+              <MenuItem
+                key={household.id}
+                onKeyDown={(e) => {
+                  if (e.key === 'ArrowRight') {
+                    const deleteButton = e.currentTarget.querySelector('.delete-button') as HTMLElement;
+                    deleteButton?.focus();
+                    e.preventDefault();
+                  }
+                }}
+                sx={{
+                  '& .delete-button': {
+                    display: 'none',
+                  },
+                  '&:hover .delete-button, &.Mui-focused .delete-button, &.Mui-focusVisible .delete-button, &:focus-within .delete-button':
+                    {
+                      display: 'inline-flex',
+                    },
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                }}
+                value={String(household.id)}
+              >
+                {household.name}
+                <IconButton
+                  aria-label={t('household.delete')}
+                  className="delete-button"
+                  onClick={(e) => handleDelete(e, household.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'ArrowLeft') {
+                      (e.currentTarget.closest('[role="option"]') as HTMLElement)?.focus();
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }
+                  }}
+                  size="small"
+                  sx={{ ml: 1 }}
+                >
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              </MenuItem>
+            ))}
+            <MenuItem
+              sx={{
+                '&:hover': {
+                  backgroundColor: 'action.hover',
+                },
+                backgroundColor: 'background.paper',
+                borderColor: 'divider',
+                borderTop: households.length > 0 ? '1px solid' : 'none',
+                bottom: 0,
+                position: 'sticky',
+                zIndex: 1,
               }}
-              size="small"
-              sx={{ ml: 1 }}
+              value="new"
             >
-              <DeleteIcon fontSize="small" />
-            </IconButton>
-          </MenuItem>
-        ))}
-        <MenuItem
-          sx={{
-            '&:hover': {
-              backgroundColor: 'action.hover',
-            },
-            backgroundColor: 'background.paper',
-            borderColor: 'divider',
-            borderTop: households.length > 0 ? '1px solid' : 'none',
-            bottom: 0,
-            position: 'sticky',
-            zIndex: 1,
-          }}
-          value="new"
-        >
-          <AddIcon sx={{ mr: 1 }} />
-          {t('household.create.button')}
-        </MenuItem>
-      </Select>
+              <AddIcon sx={{ mr: 1 }} />
+              {t('household.create.button')}
+            </MenuItem>
+          </Select>
+        </>
+      )}
+
+      {sortedInvitations.length > 0 && (
+        <>
+          <IconButton
+            aria-label={t('household.invitations.title')}
+            color="inherit"
+            onClick={handleInvitationsClick}
+            sx={{ ml: 1 }}
+          >
+            <Badge badgeContent={sortedInvitations.length} color="error">
+              <EmailIcon />
+            </Badge>
+          </IconButton>
+          <Menu anchorEl={invitationsAnchorEl} onClose={handleInvitationsClose} open={Boolean(invitationsAnchorEl)}>
+            <Typography sx={{ px: 2, py: 1 }} tabIndex={-1} variant="h6">
+              {t('household.invitations.title')}
+            </Typography>
+            <List sx={{ bgcolor: 'background.paper', maxWidth: 360, width: '100%' }}>
+              {sortedInvitations.map((invitation) => (
+                <ListItem
+                  key={invitation.id}
+                  secondaryAction={
+                    <Stack direction="row" spacing={1}>
+                      {isInvitationProcessing &&
+                      (acceptingArgs === invitation.id || rejectingArgs === invitation.id) ? (
+                        <CircularProgress size={24} />
+                      ) : (
+                        <>
+                          <IconButton
+                            aria-label={t('household.invitations.accept')}
+                            disabled={isInvitationProcessing}
+                            edge="end"
+                            onClick={() => handleAccept(invitation.id)}
+                            sx={{ color: 'success.main' }}
+                          >
+                            <CheckIcon />
+                          </IconButton>
+                          <IconButton
+                            aria-label={t('household.invitations.reject')}
+                            disabled={isInvitationProcessing}
+                            edge="end"
+                            onClick={() => handleReject(invitation.id)}
+                            sx={{ color: 'error.main' }}
+                          >
+                            <CloseIcon />
+                          </IconButton>
+                        </>
+                      )}
+                    </Stack>
+                  }
+                >
+                  <ListItemText primary={invitation.household_name} />
+                </ListItem>
+              ))}
+            </List>
+          </Menu>
+        </>
+      )}
 
       <Dialog fullWidth maxWidth="xs" onClose={handleCloseDialog} open={isDialogOpen}>
         <form onSubmit={handleSubmit}>
@@ -256,9 +371,9 @@ export default function HouseholdSelector() {
               helperText={invitationsError}
               label={t('household.create.invitations-label')}
               margin="dense"
-              onChange={(e) => setInvitations(e.target.value)}
+              onChange={(e) => setInvitationEmails(e.target.value)}
               placeholder="email1@example.com, email2@example.com"
-              value={invitations}
+              value={invitationEmails}
               variant="outlined"
             />
           </DialogContent>

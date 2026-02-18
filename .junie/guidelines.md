@@ -141,3 +141,7 @@ Notes
 - When debugging async behaviors, prefer await screen.findBy..., waitFor, and ViTest’s fake timers if necessary.
 
 This document is intentionally concise and focused on the project’s specifics so experienced developers can move fast without rediscovering conventions already established in this codebase.
+
+
+All changes to the UX should adhere to wcag accessibility guidelines.
+All UX should be suitably designed and tested to work on all devices (this includes mobile device interactions with a touch screen and responsive design for various screen sizes).

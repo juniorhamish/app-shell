@@ -33,5 +33,5 @@ export default createApi({
   reducerPath: 'appShellService',
   refetchOnFocus: true,
   refetchOnReconnect: true,
-  tagTypes: ['User', 'Households'],
+  tagTypes: ['User', 'Households', 'Invitations'],
 });
