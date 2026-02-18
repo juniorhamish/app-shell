@@ -57,11 +57,11 @@
     "chromatic": "npx chromatic",
     "dev": "vite",
     "lint": "biome ci",
-    "transform-mui": "node transform-mui-imports.js",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "test": "vitest",
-    "test:ci": "DEBUG_PRINT_LIMIT=99999 vitest run --coverage"
+    "test:ci": "DEBUG_PRINT_LIMIT=99999 vitest run --coverage",
+    "transform-mui": "node transform-mui-imports.js"
   },
   "type": "module",
   "version": "0.0.0"

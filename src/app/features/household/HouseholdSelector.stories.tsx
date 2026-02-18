@@ -1,6 +1,6 @@
+import { createTheme, ThemeProvider } from '@mui/material';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import { createTheme, ThemeProvider } from '@mui/material';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Provider } from 'react-redux';
 import TranslationsWrapper from '../../../test-util/TranslationsWrapper';
