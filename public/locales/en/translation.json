@@ -15,6 +15,11 @@
       "submit": "Create"
     },
     "delete": "Delete household",
+    "invitations": {
+      "accept": "Accept invitation",
+      "reject": "Reject invitation",
+      "title": "Pending Invitations"
+    },
     "label": "Household"
   },
   "open-settings-tooltip": "Open settings",

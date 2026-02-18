@@ -8,6 +8,13 @@ export interface Household {
   name: string;
 }
 
+export interface Invitation {
+  id: number;
+  household_id: number;
+  household_name: string;
+  invited_at: string;
+}
+
 export interface UserInfoResponse {
   firstName: string;
   lastName: string;
