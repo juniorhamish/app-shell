@@ -5,11 +5,9 @@ export interface HouseholdState {
   selectedHouseholdId: number | null;
 }
 
-const LOCAL_STORAGE_KEY = 'selectedHouseholdId';
-
-const initialState = (): HouseholdState => ({
-  selectedHouseholdId: localStorage.getItem(LOCAL_STORAGE_KEY) ? Number(localStorage.getItem(LOCAL_STORAGE_KEY)) : null,
-});
+const initialState: HouseholdState = {
+  selectedHouseholdId: null,
+};
 
 export const householdSlice = createSlice({
   initialState,
@@ -17,11 +15,6 @@ export const householdSlice = createSlice({
   reducers: {
     selectHousehold: (state, action: PayloadAction<number | null>) => {
       state.selectedHouseholdId = action.payload;
-      if (action.payload) {
-        localStorage.setItem(LOCAL_STORAGE_KEY, String(action.payload));
-      } else {
-        localStorage.removeItem(LOCAL_STORAGE_KEY);
-      }
     },
   },
 });
