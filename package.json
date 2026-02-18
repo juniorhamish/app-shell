@@ -57,6 +57,7 @@
     "chromatic": "npx chromatic",
     "dev": "vite",
     "lint": "biome ci",
+    "transform-mui": "node transform-mui-imports.js",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "test": "vitest",

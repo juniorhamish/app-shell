@@ -1,5 +1,6 @@
 import { Auth0Provider } from '@auth0/auth0-react';
-import { CssBaseline, createTheme, ThemeProvider } from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline';
+import { createTheme, ThemeProvider } from '@mui/material';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';

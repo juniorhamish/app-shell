@@ -1,18 +1,16 @@
-import {
-  Alert,
-  Avatar,
-  Backdrop,
-  Box,
-  Button,
-  CircularProgress,
-  FormControlLabel,
-  Drawer as MuiDrawer,
-  Radio,
-  RadioGroup,
-  Snackbar,
-  Stack,
-  Typography,
-} from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Avatar from '@mui/material/Avatar';
+import Backdrop from '@mui/material/Backdrop';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import MuiDrawer from '@mui/material/Drawer';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import Snackbar from '@mui/material/Snackbar';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { Field, Form, Formik } from 'formik';
 import { fieldToRadioGroup, type RadioGroupProps, TextField } from 'formik-mui';
 import { useId, useMemo, useState } from 'react';
@@ -25,7 +23,7 @@ import { useGetUserInfoQuery, useUpdateUserInfoMutation } from '../../services/u
 import { selectIsAuthenticated } from '../auth/authSlice';
 import { selectIsDrawerOpen, toggleDrawer } from './drawerSlice';
 
-function AvatarRadioGroup(props: RadioGroupProps) {
+function AvatarRadioGroup(props: Readonly<RadioGroupProps>) {
   const { t } = useTranslation();
   return <RadioGroup {...fieldToRadioGroup(props)} aria-label={t('profile.avatar-option.avatar-radio-group')} />;
 }
