@@ -1,10 +1,14 @@
 import { type Auth0ContextInterface, useAuth0 } from '@auth0/auth0-react';
-import { screen, waitFor, within } from '@testing-library/react';
+import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import { HttpResponse, http } from 'msw';
 import { vi } from 'vitest';
 import server from '../../../mocks/server';
 import renderWithProviders from '../../../test-util/test-utils';
 import HouseholdSelector from './HouseholdSelector';
+
+vi.hoisted(() => {
+  vi.stubEnv('RTK_MAX_RETRIES', '0');
+});
 
 vi.mock('@auth0/auth0-react');
 
@@ -15,7 +19,10 @@ describe('HouseholdSelector', () => {
   ];
 
   beforeEach(() => {
-    vi.mocked(useAuth0).mockReturnValue({ isAuthenticated: true } as Auth0ContextInterface);
+    vi.mocked(useAuth0).mockReturnValue({
+      isAuthenticated: true,
+      user: { sub: 'test-user-id' },
+    } as Auth0ContextInterface);
     server.use(
       http.get('https://user-service.dajohnston.co.uk/api/v1/households', () => HttpResponse.json(households)),
     );
@@ -41,11 +48,11 @@ describe('HouseholdSelector', () => {
     await user.click(within(screen.getByRole('listbox')).getByRole('option', { name: 'Household 2' }));
 
     expect(await screen.findByText('Household 2')).toBeVisible();
-    expect(localStorage.getItem('selectedHouseholdId')).toBe('2');
+    expect(localStorage.getItem('selectedHouseholdId_test-user-id')).toBe('2');
   });
 
   it('restores selection from localStorage', async () => {
-    localStorage.setItem('selectedHouseholdId', '2');
+    localStorage.setItem('selectedHouseholdId_test-user-id', '2');
     renderWithProviders(<HouseholdSelector />);
 
     expect(await screen.findByText('Household 2')).toBeVisible();
@@ -92,7 +99,7 @@ describe('HouseholdSelector', () => {
     await user.click(submitButton);
 
     expect(await screen.findByText('My New Home')).toBeVisible();
-    expect(localStorage.getItem('selectedHouseholdId')).toBe('3');
+    expect(localStorage.getItem('selectedHouseholdId_test-user-id')).toBe('3');
   });
 
   it('shows error when household name is already taken', async () => {
@@ -112,6 +119,56 @@ describe('HouseholdSelector', () => {
     await user.click(screen.getByRole('button', { name: 'Create' }));
 
     expect(await screen.findByText('A household with this name already exists')).toBeVisible();
+  });
+
+  it('validates that household name is required', async () => {
+    const { user } = renderWithProviders(<HouseholdSelector />);
+
+    const select = await screen.findByRole('combobox');
+    await user.click(select);
+    await user.click(screen.getByRole('option', { name: 'New Household' }));
+
+    const submitButton = screen.getByRole('button', { name: 'Create' });
+    await user.click(submitButton);
+
+    expect(await screen.findByText(/required/i)).toBeVisible();
+  });
+
+  it('validates that household name cannot exceed 20 characters', async () => {
+    const { user } = renderWithProviders(<HouseholdSelector />);
+
+    const select = await screen.findByRole('combobox');
+    await user.click(select);
+    await user.click(screen.getByRole('option', { name: 'New Household' }));
+
+    const nameInput = screen.getByLabelText(/household name/i);
+    // Use fireEvent.change to bypass browser-level maxLength if jsdom enforces it
+    fireEvent.change(nameInput, { target: { value: 'This name is definitely longer than twenty characters' } });
+
+    const submitButton = screen.getByRole('button', { name: 'Create' });
+    await user.click(submitButton);
+
+    expect(await screen.findByText(/most 20 characters/i)).toBeVisible();
+  });
+
+  it('shows generic error when household creation fails with non-409 error', async () => {
+    server.use(
+      http.post('https://user-service.dajohnston.co.uk/api/v1/households', () => {
+        return new HttpResponse(null, { status: 400 });
+      }),
+    );
+
+    const { user } = renderWithProviders(<HouseholdSelector />);
+
+    const select = await screen.findByRole('combobox');
+    await user.click(select);
+    await user.click(screen.getByRole('option', { name: 'New Household' }));
+
+    await user.type(screen.getByLabelText(/household name/i), 'New Household');
+    const submitButton = screen.getByRole('button', { name: 'Create' });
+    await user.click(submitButton);
+
+    expect(await screen.findByText(/failed to create household/i)).toBeVisible();
   });
 
   it('validates email addresses format', async () => {
@@ -198,7 +255,14 @@ describe('HouseholdSelector', () => {
     // After clicking delete, the menu might still be open or transitioning.
     // The select component's display should update.
     expect(await screen.findByText('Household 2', { selector: '.MuiSelect-select' })).toBeVisible();
-    expect(localStorage.getItem('selectedHouseholdId')).toBe('2');
+    expect(localStorage.getItem('selectedHouseholdId_test-user-id')).toBe('2');
+  });
+
+  it('handles invalid savedId in localStorage', async () => {
+    localStorage.setItem('selectedHouseholdId_test-user-id', '999');
+    renderWithProviders(<HouseholdSelector />);
+    // Should fall back to first available (Household 1)
+    expect(await screen.findByRole('combobox')).toHaveTextContent('Household 1');
   });
 
   it('shows delete icon on keyboard focus and allows keyboard deletion', async () => {
@@ -312,7 +376,7 @@ describe('HouseholdSelector', () => {
       await waitFor(() => {
         expect(screen.getByText('New Household B', { selector: '.MuiSelect-select' })).toBeVisible();
       });
-      expect(localStorage.getItem('selectedHouseholdId')).toBe('101');
+      expect(localStorage.getItem('selectedHouseholdId_test-user-id')).toBe('101');
 
       // Indicator should show 1
       expect(await screen.findByText('1')).toBeVisible();
@@ -345,6 +409,34 @@ describe('HouseholdSelector', () => {
       // Menu should still show New Household A
       expect(screen.getByText('New Household A')).toBeVisible();
       expect(screen.queryByText('New Household B')).not.toBeInTheDocument();
+    });
+
+    it('closes the invitations menu when the last invitation is rejected', async () => {
+      server.use(
+        http.get(
+          'https://user-service.dajohnston.co.uk/api/v1/invitations',
+          () => HttpResponse.json([invitations[0]]),
+          {
+            once: true,
+          },
+        ),
+        http.delete('https://user-service.dajohnston.co.uk/api/v1/invitations/10', () => {
+          return new HttpResponse(null, { status: 204 });
+        }),
+        http.get('https://user-service.dajohnston.co.uk/api/v1/invitations', () => HttpResponse.json([])),
+      );
+
+      const { user } = renderWithProviders(<HouseholdSelector />);
+      const indicator = await screen.findByRole('button', { name: /Pending Invitations/i });
+      await user.click(indicator);
+
+      const menu = await screen.findByRole('menu');
+      const rejectButton = within(menu).getByLabelText(/Reject invitation/i);
+      await user.click(rejectButton);
+
+      await waitFor(() => {
+        expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+      });
     });
 
     it('shows loading indicator and disables other buttons when accepting an invitation', async () => {

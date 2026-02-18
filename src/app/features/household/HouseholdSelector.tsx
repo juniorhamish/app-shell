@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import {
   Add as AddIcon,
   Check as CheckIcon,
@@ -45,9 +46,14 @@ import { selectHousehold, selectSelectedHouseholdId } from './householdSlice';
 export default function HouseholdSelector() {
   const { t } = useTranslation();
   const id = useId();
+  const { user } = useAuth0();
   const dispatch = useAppDispatch();
   const selectedHouseholdId = useAppSelector(selectSelectedHouseholdId);
   const { data: households, isSuccess, isFetching } = useGetHouseholdsQuery();
+
+  const userId = user?.sub;
+  const localStorageKey = userId ? `selectedHouseholdId_${userId}` : null;
+
   const [createHousehold, { isLoading: isCreating }] = useCreateHouseholdMutation();
   const [deleteHousehold] = useDeleteHouseholdMutation();
   const { data: invitations } = useGetInvitationsQuery();
@@ -69,18 +75,33 @@ export default function HouseholdSelector() {
   const [invitationsError, setInvitationsError] = useState('');
 
   useEffect(() => {
+    if (localStorageKey && selectedHouseholdId !== null) {
+      localStorage.setItem(localStorageKey, String(selectedHouseholdId));
+    }
+  }, [localStorageKey, selectedHouseholdId]);
+
+  useEffect(() => {
     if (isSuccess && sortedHouseholds && sortedHouseholds.length > 0 && !isFetching) {
       const isValid = sortedHouseholds.some((h) => h.id === selectedHouseholdId);
-      if (selectedHouseholdId === null || (!isValid && !isFetching)) {
-        // Only automatically select a household if none is selected.
-        // If the selected household becomes invalid (e.g. deleted),
-        // we should handle that in the delete handler by setting it to null.
-        if (selectedHouseholdId === null) {
-          dispatch(selectHousehold(sortedHouseholds[0].id));
+
+      if (selectedHouseholdId === null) {
+        // 1. Try to load from localStorage
+        const savedId = localStorageKey ? localStorage.getItem(localStorageKey) : null;
+        if (savedId) {
+          const numericSavedId = Number(savedId);
+          if (sortedHouseholds.some((h) => h.id === numericSavedId)) {
+            dispatch(selectHousehold(numericSavedId));
+            return;
+          }
         }
+        // 2. If no saved preference or invalid, auto-select first one
+        dispatch(selectHousehold(sortedHouseholds[0].id));
+      } else if (!isValid) {
+        // Selected ID is no longer valid (e.g. user changed or household deleted)
+        dispatch(selectHousehold(sortedHouseholds[0].id));
       }
     }
-  }, [isSuccess, sortedHouseholds, selectedHouseholdId, dispatch, isFetching]);
+  }, [isSuccess, sortedHouseholds, selectedHouseholdId, dispatch, isFetching, localStorageKey]);
 
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
@@ -347,7 +368,7 @@ export default function HouseholdSelector() {
       )}
 
       <Dialog fullWidth maxWidth="xs" onClose={handleCloseDialog} open={isDialogOpen}>
-        <form onSubmit={handleSubmit}>
+        <form noValidate onSubmit={handleSubmit}>
           <DialogTitle>{t('household.create.dialog-title')}</DialogTitle>
           <DialogContent>
             <TextField
